@@ -4,11 +4,30 @@
 #   The weight parameter defines the order that the links will appear in.
 
 [[main]]
-  name = "Home"
+  name = "Accueil"
+  pre = "<i class=\"fas fa-home fa-sm\"></i>"
   url = "/"
-  weight = 10
+  weight = 1
 
 [[main]]
-  name = "About"
-  url = "about/"
-  weight = 20
+  name = "Posts"
+  pre = "<i class=\"fas fa-keyboard fa-ms\"></i>"
+  url = "post/"
+  weight = 2  
+[[main]]
+  name = "Catégories"
+  pre = "<i class=\"far fa-envelope\"></i>"
+  url = "/categories"
+  weight = 3
+[[main]]
+  name = "Tags"
+  pre = "<i class=\"fas fa-tags fa-ms\"></i>"
+  url = "/tags"
+  weight = 4
+  
+[[main]]
+  name = "Contact"
+  pre = "<i class=\"far fa-envelope\"></i>"
+  url = "contact/"
+  weight = 5
+  
