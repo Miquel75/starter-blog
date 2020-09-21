@@ -1,0 +1,275 @@
+---
+title: 'Les Bases'
+subtitle: 'Un survol rapide'
+summary: Une introduction aux outils que l'on va utiliser constamment par la suite.
+authors:
+- Miquel Pons
+
+tags:
+- R, bases, RMarkdown, RStudio, matrices, data-frame, tableaux, listes, opérations, instructions
+
+categories:
+- R, Premiers pas
+
+date: Sys.Date()
+lastmod: "2020-09-22T00:00:00Z"
+featured: false
+draft: false
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Placement options: 1 = Full column width, 2 = Out-set, 3 = Screen-width
+# Focal point options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
+image:
+  placement: 1
+#  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/CpkOjOcXdUY)'
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+
+
+
+
+---
+
+Avant d'entrer au coeur des tests statistiques, modèles et autres espiegleries, voici quelques bases qu'il serait pratique d'avoir. Ces bases seront survolés rapidement. Des liens seront proposer pour approndir et renforcer ces bases.
+
+* <https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf>
+
+Lorsque vous avez une difficulté, une question, n'hesitez pas à chercher la réponse sur internet. Beaucoup de blogs comme celui-ci et de forums répondent aux questions que vous vous posez. 
+
+# R Studio
+
+Pour commencer tous les document que vous lisez sur ce site sont créés à partir de R studio. Vous pouvez télécharger R Studio gratuitement sur <https://rstudio.com/>. R Studio est un environnement de developpement libre pour R, permettant une prise en main plus facile, une écriture plus rapide, une visualition plus pratique. Cet environnement et divisé en 4 zones ; la zone d'edition semblable à une IDE ou vous pouvez écrire votre script, la console ou s'affiche les resultats, l'affichage de l'environnement avec les objets créés, une zone d'affichage permettant de visualiser les graphiques, d'obtenir l'aide, de voir les packages installés, et naviguer parmis vos fichier.
+
+Pour apprendre a mieux utiliser R vous pouvez regarder les raccourcis dans tools - Keyboard shortcuts ou taper Alt + Shift + K. 
+Pour ce qui est de l'installation et prise en main je vous conseille de chercher par vous même sur internet ou ce site.
+
+* <https://statistique-et-logiciel-r.com/installer-logiciel-r-environnement-r-studio/>
+
+# R Markdown
+
+Toutes les pages de ce site sont créés sur Rstudio en utilisant le package R Markdown. Markdown est un language permettant de baliser du texte avec des symboles (#, ```, **) afin de donner à votre document sortie une forme, des titres, des paragraphes, scripts de codes, resultats, graphiques etc..
+
+
+Pour l'installer c'est très simple.
+
+
+`install.packages ("rmarkdown")`
+
+
+C'est avec cette instruction que vous pouvez installer les packages nécessaires. Un package est un ensemble de fonctions vous permettant d'effectuer une action. C'est un bout de code écrit par quelqu'un d'autre que vous pouvez utiliser librement, en le paramétrant vous même grâce à des arguments. Chaque package est accompagné d'une aide que vous pouvez regarder avec la fonction help, donnant des indications sur comment utiliser le package.
+
+```{r eval = FALSE}
+help(install.packages)
+```
+
+* Vous trouverez des informations concernant R Markdown directement sur <http://rmarkdown.rstudio.com>.
+* Une Cheat sheet (type de fiche) ici : <https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf>
+* Un peu plus d'infos : <https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf>
+* Un guide de prise en main : <https://statistique-et-logiciel-r.com/guide-de-demarrage-en-r-markdown/>
+
+# Les objets
+
+Lorsque l'on utilise R on est amené a créer des objets. Ces objets peuvent être de différents types;
+
+### **Les vecteurs**
+Les vecteurs peuvent être des variables quantitatives(0.01), qualitatives (bleu, grand), ou logique (Vrai/Faux).
+
+```{r }
+
+vec.quant <- c(1, 0.04, 250)
+vec.quant
+vec.qual <- c("bleu", "rose", "petit")
+vec.qual
+vec.log <- c("TRUE", "FALSE", "TRUE")
+vec.log
+
+```
+
+Pour extraire d'une variable la partie qui nous interesse de la façon suivante : var[ ]
+
+
+```{r }
+
+vec.qual[2]
+
+```
+
+### **Les matrices**
+Les matrices sont des tableaux à deux dimensions, donc avec un format rectangulaire. 
+Vous lire le code suivant comme ceci : " Je créé un objet nommé matrice. Cet objet et créé par la fonction matrix permettant de créé une matrice. Je décide que mes donnée seront de numéros allant de 1 à 12, répartis sur 4 lignes et  colonnes".
+
+```{r }
+
+matrice <- matrix(data = 1:12, nrow = 4, ncol = 3)
+matrice
+
+```
+
+Il n'est pas obligatoire d'écrire dans votre code "data" "nrow" et "ncol", vou pouvez directement mettre les données que vous voulez. Il est cependant plus clair pour vous et pour ceux qui auraient à utiliser votre code d'indiquer à quoi correpondent ce chiffres.
+
+Comme pour toutes les fonctions vous pouvez regarder la page d'aide `help(matrix)`. Vous y verrez par exemple que vou pouvez décider avec l'argument "byrow" de rentrer vos données par colonne (comme dans l'exemple précédent)  ou par ligne. 
+
+
+```{r }
+
+matrice <- matrix(data = 1:12, nrow = 4, ncol = 3, byrow = TRUE)
+matrice
+
+```
+
+POur extraire des données d'une matrice c'est simple, il suffit de donné la position de la donnée que l'on souhaite afficher grace deux nombres.
+
+
+```{r }
+
+matrice [2, 3]
+
+```
+
+Indiquer une seule dimension, une seule valeur, nous affichera toute une ligne ou colonne.
+
+```{r }
+
+matrice [2, ]
+
+```
+
+
+### **Les tableaux**
+
+Même principe que la matrice mais avec plus de deux dimensions. 
+
+```{r }
+
+tableau <- array(data = 1:24, dim = c( 4, 3, 2))
+tableau
+
+```
+
+### **Les data frame **
+Probablement le format le plus utilisé pour regrouper les données de différents types
+
+```{r }
+
+df <- data.frame (vec.quant, vec.qual, vec.log)
+df
+
+```
+
+Pour extraire des données d'un data frame, il suffit de demander le numéro de la colonne, ou bien le nom du vecteur, de la variable.
+
+```{r }
+
+df [, 1]
+
+df$vec.qual
+
+```
+
+### **Les listes**
+Très utilisés également pour regrouper différents types d'objets. Les listes sont cependant plus flexible que les data frame puisque:
+* les variables d'une liste n'ont pas besoin d'être de la même longueur
+* les éléments n'ont pas besoin d'être des vecteurs
+* plusieurs variable peuvent avoir le même nom
+
+Pour les jeux de données classiques à deux dimensions les data frame sont très pratiques. Cependant si la structure est plus complexe la liste est adaptée.
+
+Vous pouvez nommer chaque vecteurs dans votre liste, ici V1...V4. 
+
+```{r }
+
+liste <- list(V1 = vec.quant, V2 = vec.qual, V3= vec.log, V4 = letters[1:10])
+liste
+```
+Puis extraire les données que vous voulez grâce au nom ou à la position cette fois en utilisant des doubles crochets. Si on utilise un simple crochet on obtiendra le résultat sous forme de liste ce qui peut rendre la manipulation des données moins facile. La fonction **class** permet de visualiser le type d'objet auquel on a affaire.
+
+```{r }
+
+liste$V1
+
+liste[[2]]
+
+liste[2]
+
+class(liste[[2]])
+
+class(liste[2])
+
+
+```
+
+# **Opérations de base**
+
+
+`+` pour l'addition, `-` la soustraction, `/` la division, `*` la multiplication, `^` la puissance, `%/%` pour obtenir le quotient d'une division, `%%` le reste d'une division (10/3, le quotient c'est 3 le reste 1), `<` inferieur a, `>` supérieur a,`==` égal a, `<=` inférieur ou égal a, `!=` différent de, `x|y` x ou y, `x&y` x et y.
+
+En savoir plus sur le site suivant :
+<http://www.sthda.com/french/wiki/les-operateurs-arithmetiques-et-logiques>
+
+# **Instructions de contrôle**
+
+Les instructions de contrôle permettent de faciliter des opérations.
+
+**if** permet de réaliser une opération en fonction d'une condition
+
+```{r }
+a <- 10
+if (a < 11) {
+  a = a + 1
+}
+
+a
+
+```
+
+**else** utilisé avec **if** permet de réaliser une opération dans le cas où les conditions du **if** ne sont pas conformes.
+
+```{r }
+
+
+tot <-  10
+
+if (tot > 20) {
+    print("C'est plus !")
+} else {
+    print("C'est moins !")  
+}
+
+```
+**for** est très utile puisqu'il permet de faire des boucles.
+```{r }
+
+a <- 10
+
+for (i in 1:10) {
+a <- a + 1
+}
+
+a
+
+```
+
+**while** permet d'exécuter une opération jusqu'a ce qu'une condition soit conforme. 
+
+```{r }
+a <- 10
+while (a < 15) {
+  a = a + 1
+}
+
+a
+
+```
+
+
+
+
+
