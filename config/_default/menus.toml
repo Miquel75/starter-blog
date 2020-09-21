@@ -5,29 +5,29 @@
 
 [[main]]
   name = " Accueil"
-  pre = "<i class=\"fas fa-home fa-sm\"></i>"
+  #pre = "<i class=\"fas fa-home fa-sm\"></i>"
   url = "/"
   weight = 1
 
 [[main]]
   name = " Posts"
-  pre = "<i class=\"fas fa-keyboard fa-ms\"></i>"
+  #pre = "<i class=\"fas fa-keyboard fa-ms\"></i>"
   url = "post/"
   weight = 2  
 [[main]]
   name = " Catégories"
-  pre = "<i class=\"far fa-compass fa-ms\"></i>"
+  #pre = "<i class=\"far fa-compass fa-ms\"></i>"
   url = "/categories"
   weight = 3
 [[main]]
   name = " Tags"
-  pre = "<i class=\"fas fa-tags fa-ms\"></i>"
+  #pre = "<i class=\"fas fa-tags fa-ms\"></i>"
   url = "/tags"
   weight = 4
   
 [[main]]
   name = " Contact"
-  pre = "<i class=\"far fa-envelope fa-ms \"></i>"
+  #pre = "<i class=\"far fa-envelope fa-ms \"></i>"
   url = "contact/"
   weight = 5
   
