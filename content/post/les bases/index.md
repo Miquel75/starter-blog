@@ -6,10 +6,20 @@ authors:
 - Miquel Pons
 
 tags:
-- R, bases, RMarkdown, RStudio, matrices, data-frame, tableaux, listes, opérations, instructions
+- R
+- bases
+- RMarkdown
+- RStudio
+- matrices
+- data-frame
+- tableaux
+- listes
+- opérations
+- instructions
 
 categories:
-- R, Premiers pas
+- R
+- Premiers pas
 
 date: Sys.Date()
 lastmod: "2020-09-22T00:00:00Z"
