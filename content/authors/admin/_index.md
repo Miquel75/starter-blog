@@ -14,7 +14,7 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: Passionné par l'écologie je souhaite conserver la biodiversité. Octopons vulgaris regroupe mes sites dédiés à la vulgarisation afin de transmettre connaissances et outils permettant la conservation de la biodiversité.
+bio: Passionné par l'écologie, je souhaite conserver la biodiversité. Octopons vulgaris regroupe mes sites dédiés à la vulgarisation afin de transmettre connaissances et outils permettant la conservation de la biodiversité.
 
 #interests:
 #- Artificial Intelligence
