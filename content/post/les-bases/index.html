@@ -1,0 +1,257 @@
+---
+title: 'Les Bases'
+subtitle: 'Un survol rapide'
+summary: Une introduction aux outils que l'on va utiliser constamment par la suite.
+authors:
+- Miquel Pons
+
+tags:
+- R
+- bases
+- RMarkdown
+- RStudio
+- matrices
+- data-frame
+- tableaux
+- listes
+- opérations
+- instructions
+
+categories:
+- R
+- Premiers pas
+
+date: Sys.Date()
+lastmod: "2020-09-22T00:00:00Z"
+featured: false
+draft: false
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Placement options: 1 = Full column width, 2 = Out-set, 3 = Screen-width
+# Focal point options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
+image:
+  placement: 1
+#  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/CpkOjOcXdUY)'
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+
+
+
+
+---
+
+
+
+<p>Avant d’entrer au coeur des tests statistiques, modèles et autres espiegleries, voici quelques bases qu’il serait pratique d’avoir. Ces bases seront survolés rapidement. Des liens seront proposer pour approndir et renforcer ces bases.</p>
+<ul>
+<li><a href="https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf" class="uri">https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf</a></li>
+</ul>
+<p>Lorsque vous avez une difficulté, une question, n’hesitez pas à chercher la réponse sur internet. Beaucoup de blogs comme celui-ci et de forums répondent aux questions que vous vous posez.</p>
+<div id="r-studio" class="section level1">
+<h1>R Studio</h1>
+<p>Pour commencer tous les document que vous lisez sur ce site sont créés à partir de R studio. Vous pouvez télécharger R Studio gratuitement sur <a href="https://rstudio.com/" class="uri">https://rstudio.com/</a>. R Studio est un environnement de developpement libre pour R, permettant une prise en main plus facile, une écriture plus rapide, une visualition plus pratique. Cet environnement et divisé en 4 zones ; la zone d’edition semblable à une IDE ou vous pouvez écrire votre script, la console ou s’affiche les resultats, l’affichage de l’environnement avec les objets créés, une zone d’affichage permettant de visualiser les graphiques, d’obtenir l’aide, de voir les packages installés, et naviguer parmis vos fichier.</p>
+<p>Pour apprendre a mieux utiliser R vous pouvez regarder les raccourcis dans tools - Keyboard shortcuts ou taper Alt + Shift + K.
+Pour ce qui est de l’installation et prise en main je vous conseille de chercher par vous même sur internet ou ce site.</p>
+<ul>
+<li><a href="https://statistique-et-logiciel-r.com/installer-logiciel-r-environnement-r-studio/" class="uri">https://statistique-et-logiciel-r.com/installer-logiciel-r-environnement-r-studio/</a></li>
+</ul>
+</div>
+<div id="r-markdown" class="section level1">
+<h1>R Markdown</h1>
+<p>Toutes les pages de ce site sont créés sur Rstudio en utilisant le package R Markdown. Markdown est un language permettant de baliser du texte avec des symboles (#, ```, **) afin de donner à votre document sortie une forme, des titres, des paragraphes, scripts de codes, resultats, graphiques etc..</p>
+<p>Pour l’installer c’est très simple.</p>
+<p><code>install.packages ("rmarkdown")</code></p>
+<p>C’est avec cette instruction que vous pouvez installer les packages nécessaires. Un package est un ensemble de fonctions vous permettant d’effectuer une action. C’est un bout de code écrit par quelqu’un d’autre que vous pouvez utiliser librement, en le paramétrant vous même grâce à des arguments. Chaque package est accompagné d’une aide que vous pouvez regarder avec la fonction help, donnant des indications sur comment utiliser le package.</p>
+<pre class="r"><code>help(install.packages)</code></pre>
+<ul>
+<li>Vous trouverez des informations concernant R Markdown directement sur <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</li>
+<li>Une Cheat sheet (type de fiche) ici : <a href="https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf" class="uri">https://rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf</a></li>
+<li>Un peu plus d’infos : <a href="https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf" class="uri">https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf</a></li>
+<li>Un guide de prise en main : <a href="https://statistique-et-logiciel-r.com/guide-de-demarrage-en-r-markdown/" class="uri">https://statistique-et-logiciel-r.com/guide-de-demarrage-en-r-markdown/</a></li>
+</ul>
+</div>
+<div id="les-objets" class="section level1">
+<h1>Les objets</h1>
+<p>Lorsque l’on utilise R on est amené a créer des objets. Ces objets peuvent être de différents types;</p>
+<div id="les-vecteurs" class="section level3">
+<h3><strong>Les vecteurs</strong></h3>
+<p>Les vecteurs peuvent être des variables quantitatives(0.01), qualitatives (bleu, grand), ou logique (Vrai/Faux).</p>
+<pre class="r"><code>vec.quant &lt;- c(1, 0.04, 250)
+vec.quant</code></pre>
+<pre><code>## [1]   1.00   0.04 250.00</code></pre>
+<pre class="r"><code>vec.qual &lt;- c(&quot;bleu&quot;, &quot;rose&quot;, &quot;petit&quot;)
+vec.qual</code></pre>
+<pre><code>## [1] &quot;bleu&quot;  &quot;rose&quot;  &quot;petit&quot;</code></pre>
+<pre class="r"><code>vec.log &lt;- c(&quot;TRUE&quot;, &quot;FALSE&quot;, &quot;TRUE&quot;)
+vec.log</code></pre>
+<pre><code>## [1] &quot;TRUE&quot;  &quot;FALSE&quot; &quot;TRUE&quot;</code></pre>
+<p>Pour extraire d’une variable la partie qui nous interesse de la façon suivante : var[ ]</p>
+<pre class="r"><code>vec.qual[2]</code></pre>
+<pre><code>## [1] &quot;rose&quot;</code></pre>
+</div>
+<div id="les-matrices" class="section level3">
+<h3><strong>Les matrices</strong></h3>
+<p>Les matrices sont des tableaux à deux dimensions, donc avec un format rectangulaire.
+Vous lire le code suivant comme ceci : " Je créé un objet nommé matrice. Cet objet et créé par la fonction matrix permettant de créé une matrice. Je décide que mes donnée seront de numéros allant de 1 à 12, répartis sur 4 lignes et colonnes".</p>
+<pre class="r"><code>matrice &lt;- matrix(data = 1:12, nrow = 4, ncol = 3)
+matrice</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    5    9
+## [2,]    2    6   10
+## [3,]    3    7   11
+## [4,]    4    8   12</code></pre>
+<p>Il n’est pas obligatoire d’écrire dans votre code “data” “nrow” et “ncol”, vou pouvez directement mettre les données que vous voulez. Il est cependant plus clair pour vous et pour ceux qui auraient à utiliser votre code d’indiquer à quoi correpondent ce chiffres.</p>
+<p>Comme pour toutes les fonctions vous pouvez regarder la page d’aide <code>help(matrix)</code>. Vous y verrez par exemple que vou pouvez décider avec l’argument “byrow” de rentrer vos données par colonne (comme dans l’exemple précédent) ou par ligne.</p>
+<pre class="r"><code>matrice &lt;- matrix(data = 1:12, nrow = 4, ncol = 3, byrow = TRUE)
+matrice</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    2    3
+## [2,]    4    5    6
+## [3,]    7    8    9
+## [4,]   10   11   12</code></pre>
+<p>POur extraire des données d’une matrice c’est simple, il suffit de donné la position de la donnée que l’on souhaite afficher grace deux nombres.</p>
+<pre class="r"><code>matrice [2, 3]</code></pre>
+<pre><code>## [1] 6</code></pre>
+<p>Indiquer une seule dimension, une seule valeur, nous affichera toute une ligne ou colonne.</p>
+<pre class="r"><code>matrice [2, ]</code></pre>
+<pre><code>## [1] 4 5 6</code></pre>
+</div>
+<div id="les-tableaux" class="section level3">
+<h3><strong>Les tableaux</strong></h3>
+<p>Même principe que la matrice mais avec plus de deux dimensions.
+<code>knitr::kable</code> permet de rendre les tableaux plus sympathique esthétiquement.
+<code>colnames()</code> permet de nommer ou renommer les colonnes du tableau.</p>
+<pre class="r"><code>tableau &lt;- array(data = 1:12, dim = c( 4, 3))
+colnames(tableau) &lt;- c(&quot;col 1&quot;, &quot;col 2&quot;, &quot;col 3&quot;)
+knitr::kable(tableau)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">col 1</th>
+<th align="right">col 2</th>
+<th align="right">col 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">9</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">6</td>
+<td align="right">10</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">7</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">8</td>
+<td align="right">12</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="les-data-frame" class="section level3">
+<h3><strong>Les data frame </strong></h3>
+<p>Probablement le format le plus utilisé pour regrouper les données de différents types</p>
+<pre class="r"><code>df &lt;- data.frame (vec.quant, vec.qual, vec.log)
+df</code></pre>
+<pre><code>##   vec.quant vec.qual vec.log
+## 1      1.00     bleu    TRUE
+## 2      0.04     rose   FALSE
+## 3    250.00    petit    TRUE</code></pre>
+<p>Pour extraire des données d’un data frame, il suffit de demander le numéro de la colonne, ou bien le nom du vecteur, de la variable.</p>
+<pre class="r"><code>df [, 1]</code></pre>
+<pre><code>## [1]   1.00   0.04 250.00</code></pre>
+<pre class="r"><code>df$vec.qual</code></pre>
+<pre><code>## [1] &quot;bleu&quot;  &quot;rose&quot;  &quot;petit&quot;</code></pre>
+</div>
+<div id="les-listes" class="section level3">
+<h3><strong>Les listes</strong></h3>
+<p>Très utilisés également pour regrouper différents types d’objets. Les listes sont cependant plus flexible que les data frame puisque:
+* les variables d’une liste n’ont pas besoin d’être de la même longueur
+* les éléments n’ont pas besoin d’être des vecteurs
+* plusieurs variable peuvent avoir le même nom</p>
+<p>Pour les jeux de données classiques à deux dimensions les data frame sont très pratiques. Cependant si la structure est plus complexe la liste est adaptée.</p>
+<p>Vous pouvez nommer chaque vecteurs dans votre liste, ici V1…V4.</p>
+<pre class="r"><code>liste &lt;- list(V1 = vec.quant, V2 = vec.qual, V3= vec.log, V4 = letters[1:10])
+liste</code></pre>
+<pre><code>## $V1
+## [1]   1.00   0.04 250.00
+## 
+## $V2
+## [1] &quot;bleu&quot;  &quot;rose&quot;  &quot;petit&quot;
+## 
+## $V3
+## [1] &quot;TRUE&quot;  &quot;FALSE&quot; &quot;TRUE&quot; 
+## 
+## $V4
+##  [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot; &quot;f&quot; &quot;g&quot; &quot;h&quot; &quot;i&quot; &quot;j&quot;</code></pre>
+<p>Puis extraire les données que vous voulez grâce au nom ou à la position cette fois en utilisant des doubles crochets. Si on utilise un simple crochet on obtiendra le résultat sous forme de liste ce qui peut rendre la manipulation des données moins facile. La fonction <strong>class</strong> permet de visualiser le type d’objet auquel on a affaire.</p>
+<pre class="r"><code>liste$V1</code></pre>
+<pre><code>## [1]   1.00   0.04 250.00</code></pre>
+<pre class="r"><code>liste[[2]]</code></pre>
+<pre><code>## [1] &quot;bleu&quot;  &quot;rose&quot;  &quot;petit&quot;</code></pre>
+<pre class="r"><code>liste[2]</code></pre>
+<pre><code>## $V2
+## [1] &quot;bleu&quot;  &quot;rose&quot;  &quot;petit&quot;</code></pre>
+<pre class="r"><code>class(liste[[2]])</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>class(liste[2])</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+</div>
+</div>
+<div id="opérations-de-base" class="section level1">
+<h1><strong>Opérations de base</strong></h1>
+<p><code>+</code> pour l’addition, <code>-</code> la soustraction, <code>/</code> la division, <code>*</code> la multiplication, <code>^</code> la puissance, <code>%/%</code> pour obtenir le quotient d’une division, <code>%%</code> le reste d’une division (10/3, le quotient c’est 3 le reste 1), <code>&lt;</code> inferieur a, <code>&gt;</code> supérieur a,<code>==</code> égal a, <code>&lt;=</code> inférieur ou égal a, <code>!=</code> différent de, <code>x|y</code> x ou y, <code>x&amp;y</code> x et y.</p>
+<p>En savoir plus sur le site suivant :
+<a href="http://www.sthda.com/french/wiki/les-operateurs-arithmetiques-et-logiques" class="uri">http://www.sthda.com/french/wiki/les-operateurs-arithmetiques-et-logiques</a></p>
+</div>
+<div id="instructions-de-contrôle" class="section level1">
+<h1><strong>Instructions de contrôle</strong></h1>
+<p>Les instructions de contrôle permettent de faciliter des opérations.</p>
+<p><strong>if</strong> permet de réaliser une opération en fonction d’une condition</p>
+<pre class="r"><code>a &lt;- 10
+if (a &lt; 11) {
+  a = a + 1
+}
+a</code></pre>
+<pre><code>## [1] 11</code></pre>
+<p><strong>else</strong> utilisé avec <strong>if</strong> permet de réaliser une opération dans le cas où les conditions du <strong>if</strong> ne sont pas conformes.</p>
+<pre class="r"><code>tot &lt;-  10
+
+if (tot &gt; 20) {
+    print(&quot;C&#39;est plus !&quot;)
+} else {
+    print(&quot;C&#39;est moins !&quot;)  
+}</code></pre>
+<pre><code>## [1] &quot;C&#39;est moins !&quot;</code></pre>
+<p><strong>for</strong> est très utile puisqu’il permet de faire des boucles.</p>
+<pre class="r"><code>a &lt;- 10
+
+for (i in 1:10) {
+a &lt;- a + 1
+}
+a</code></pre>
+<pre><code>## [1] 20</code></pre>
+<p><strong>while</strong> permet d’exécuter une opération jusqu’a ce qu’une condition soit conforme.</p>
+<pre class="r"><code>a &lt;- 10
+while (a &lt; 15) {
+  a = a + 1
+}
+a</code></pre>
+<pre><code>## [1] 15</code></pre>
+</div>

@@ -156,11 +156,14 @@ matrice [2, ]
 ### **Les tableaux**
 
 Même principe que la matrice mais avec plus de deux dimensions. 
+`knitr::kable` permet de rendre les tableaux plus sympathique esthétiquement.
+`colnames()` permet de nommer ou renommer les colonnes du tableau.
 
 ```{r }
 
-tableau <- array(data = 1:24, dim = c( 4, 3, 2))
-tableau
+tableau <- array(data = 1:12, dim = c( 4, 3))
+colnames(tableau) <- c("col 1", "col 2", "col 3")
+knitr::kable(tableau)
 
 ```
 
@@ -235,16 +238,12 @@ a <- 10
 if (a < 11) {
   a = a + 1
 }
-
 a
-
 ```
 
 **else** utilisé avec **if** permet de réaliser une opération dans le cas où les conditions du **if** ne sont pas conformes.
 
 ```{r }
-
-
 tot <-  10
 
 if (tot > 20) {
@@ -262,9 +261,7 @@ a <- 10
 for (i in 1:10) {
 a <- a + 1
 }
-
 a
-
 ```
 
 **while** permet d'exécuter une opération jusqu'a ce qu'une condition soit conforme. 
@@ -274,12 +271,8 @@ a <- 10
 while (a < 15) {
   a = a + 1
 }
-
 a
-
 ```
-
-
 
 
 
