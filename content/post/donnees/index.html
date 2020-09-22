@@ -1,0 +1,202 @@
+---
+title: "Données"
+categories:
+- R
+- Premiers pas
+date: "2020-09-22"
+draft: no
+featured: no
+image:
+  placement: 1
+  caption: 'Image par Image par Gerd Altmann de Pixabay'
+  focal_point: ""
+  preview_only: false
+lastmod: '2020-09-22T00:00:00Z'
+projects: []
+subtitle: Importer et manipuler les données
+summary: A quels types de données pourrions nous être confrontés ?
+tags:
+- R
+- bases
+- Importer
+- Exporter
+- Visualiser
+- Manipuler
+authors: 
+- Miquel Pons
+---
+
+
+
+<p>Avant de pouvoir traiter vos données sur R, il est bon de paramétrer son repertoire de travail. Pour cela il faut indiquer à R dans quel dossier de votre ordinateur vous souhaitez travailler, un dossier ou vous avez préalablement mis vos données. <strong>setwd()</strong> est utilisé pour indiquer votre répertoire. On utilise <strong>getwd()</strong> pour afficher le répertoire dans lequel on se trouve.</p>
+<pre class="r"><code>setwd (&quot;C:/Users/Miquel Pons/Desktop&quot;)
+
+getwd()</code></pre>
+<pre><code>## [1] &quot;C:/Users/Miquel Pons/Desktop&quot;</code></pre>
+<p>Le mieux reste de commencer un nouveau projet : File -&gt; New Project
+Lorqu’on veut travailler desuss, il suffit alors d’ouvrir votre projet en cliquant sur “New-project.Rproj” ou d’aller le chercher File -&gt; Open Project.
+De cette façon vous aurez des dossiers de travail beaucoup plus propre.</p>
+<p>Charger les librairies</p>
+<div id="importer-de-données" class="section level3">
+<h3>Importer de données</h3>
+<p>Si vos données sont sous format txt vous pouvez utiliser <strong>read.table</strong>. Très souvent les données sont enregistré sous format csv, dans ce cas la utilisez la fonction <strong>read.csv</strong> (si les données sont séparés par des virgules “,”) ou <strong>read.csv2</strong> ( si les données sont séparés par des points-virgules “;”) afin d’importer vos données.</p>
+<pre class="r"><code>table &lt;- read.table(&quot;poissons.txt&quot;, sep = &quot;;&quot;) #créer un objet table contenant les données du tableau poisson.txt, l&#39;argument &quot;sep&quot; indique que les colonnes sont séparés par des &quot;;&quot;</code></pre>
+<p>Le tableau devrait s’afficher sur RStudio et être disponible dans votre environment.</p>
+</div>
+<div id="exporter-de-données" class="section level3">
+<h3>Exporter de données</h3>
+<p>Il est très facile d’exporter ses données avec <strong>write.table</strong>, <strong>write.csv</strong> ou <strong>write.csv2</strong>.</p>
+<pre class="r"><code>write.csv2(table, &quot;poissons.csv&quot;) #créer un fichier csv nommé &quot;poissons.csv&quot; à partir du tableau &quot;table&quot; </code></pre>
+</div>
+<div id="un-premier-coup-doeil" class="section level3">
+<h3>Un premier coup d’oeil</h3>
+<p><strong>head</strong> affiche les 6 premières lignes de votre tableau <code>head(table)</code></p>
+<p><strong>tail</strong> affiche les 6 dernières lignes de votre tableau <code>tail(table)</code></p>
+<p><strong>dim</strong> affiche les dimensions de votre tableau de données</p>
+<pre class="r"><code>dim(table)</code></pre>
+<pre><code>## [1] 28 18</code></pre>
+<p><strong>names</strong> affiche le nom des variables</p>
+<pre class="r"><code>names(table)</code></pre>
+<pre><code>##  [1] &quot;Sais&quot;            &quot;Zone&quot;            &quot;Mod&quot;             &quot;Prof&quot;           
+##  [5] &quot;Atherine&quot;        &quot;BlennieDeRoux&quot;   &quot;Canthare&quot;        &quot;Castagnole&quot;     
+##  [9] &quot;CrevetteBouquet&quot; &quot;Girelle&quot;         &quot;Oblade&quot;          &quot;PageotAcarne&quot;   
+## [13] &quot;Poulpe&quot;          &quot;RougetDeRoche&quot;   &quot;Seiche&quot;          &quot;SerranChevrette&quot;
+## [17] &quot;Sparaillon&quot;      &quot;Tacaud&quot;</code></pre>
+<p><strong>str</strong> affiche les types de variables</p>
+<pre class="r"><code>str(table)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    28 obs. of  18 variables:
+##  $ Sais           : chr  &quot;Chaude&quot; &quot;Chaude&quot; &quot;Chaude&quot; &quot;Chaude&quot; ...
+##  $ Zone           : chr  &quot;Z1&quot; &quot;Z1&quot; &quot;Z1&quot; &quot;Z1&quot; ...
+##  $ Mod            : chr  &quot;BuseTapis&quot; &quot;BuseTapis&quot; &quot;BuseTapis&quot; &quot;Proto&quot; ...
+##  $ Prof           : int  11 11 11 11 10 16 10 14 30 30 ...
+##  $ Atherine       : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ BlennieDeRoux  : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Canthare       : int  0 0 0 0 0 0 0 0 50 0 ...
+##  $ Castagnole     : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ CrevetteBouquet: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Girelle        : int  0 0 0 0 0 0 1 0 0 0 ...
+##  $ Oblade         : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ PageotAcarne   : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Poulpe         : int  0 2 1 0 4 5 9 5 0 0 ...
+##  $ RougetDeRoche  : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Seiche         : int  0 0 0 0 0 0 0 1 0 0 ...
+##  $ SerranChevrette: int  1 0 1 1 0 1 1 4 0 2 ...
+##  $ Sparaillon     : int  4 0 3 0 0 0 0 0 0 0 ...
+##  $ Tacaud         : int  0 0 0 0 0 0 0 0 0 100 ...</code></pre>
+<p><strong>summary</strong> affiche un résumé de vos données, donnant des informations utiles comme le compte des variables qualitatives, le minimum, maximum, médiane, moyenne des variable quantitatives.</p>
+<pre class="r"><code>summary(table[, 1:4]) </code></pre>
+<pre><code>##      Sais               Zone               Mod                 Prof      
+##  Length:28          Length:28          Length:28          Min.   :10.00  
+##  Class :character   Class :character   Class :character   1st Qu.:11.00  
+##  Mode  :character   Mode  :character   Mode  :character   Median :15.00  
+##                                                           Mean   :19.57  
+##                                                           3rd Qu.:30.00  
+##                                                           Max.   :30.00</code></pre>
+</div>
+<div id="manipulation-des-données" class="section level3">
+<h3>Manipulation des données</h3>
+<p>Le package <strong>tidyverse</strong> et son extension <strong>dplyr</strong> permet d’utiliser des verbes pour manipuler votre tableau de données. Vous pouvez installer ces packages facilement <code>install.packages("dplyr")</code>. Parfois d’autres packages seront nécessaire pour utiliser <strong>dplyr</strong>. Ils seront indiqués sur la console, il suffit alors de lire les eventuels erreurs qui s’affichent et installer les packages manquant.</p>
+<p>Vous pouvez alors utiliser le vocabulaire de dplyr, après avoir compilé le package, pour manipuler votre base de données.</p>
+<p><strong>slice</strong> permet de selectionner une tranche choisit de votre tableau, par exemple la ligne 10</p>
+<pre class="r"><code>library(dplyr) #compiler le package</code></pre>
+<pre><code>## 
+## Attachement du package : &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>slice (table, 10) #selectionner une tranche de données</code></pre>
+<pre><code>##      Sais Zone    Mod Prof Atherine BlennieDeRoux Canthare Castagnole
+## 10 Chaude   Z3 Panier   30        0             0        0          0
+##    CrevetteBouquet Girelle Oblade PageotAcarne Poulpe RougetDeRoche Seiche
+## 10               0       0      0            0      0             0      0
+##    SerranChevrette Sparaillon Tacaud
+## 10               2          0    100</code></pre>
+<p><strong>filter</strong> permet de selectionner les données en fonction d’un critère.</p>
+<pre class="r"><code>filter (table, Poulpe == 1) #selectionner le lignes ou la colonne Poulpe comporte 1</code></pre>
+<pre><code>##      Sais Zone       Mod Prof Atherine BlennieDeRoux Canthare Castagnole
+## 3  Chaude   Z1 BuseTapis   11        0             0        0          0
+## 12 Chaude   Z4    Panier   30        0             0        0          0
+## 13 Chaude   Z4    Panier   30        0             0        0          0
+##    CrevetteBouquet Girelle Oblade PageotAcarne Poulpe RougetDeRoche Seiche
+## 3                0       0      0            0      1             0      0
+## 12               0       0      0            0      1             0      0
+## 13               0       0      0            0      1             0      0
+##    SerranChevrette Sparaillon Tacaud
+## 3                1          3      0
+## 12               0          0      0
+## 13               0          0      0</code></pre>
+<p><strong>select</strong> permet de selectionner les colonnes d’un tableau</p>
+<pre class="r"><code>poulpe&lt;- select (table, Zone, Poulpe) #selectionner les colonnes Zone et Poulpe
+head(poulpe)</code></pre>
+<pre><code>##   Zone Poulpe
+## 1   Z1      0
+## 2   Z1      2
+## 3   Z1      1
+## 4   Z1      0
+## 5   Z2      4
+## 6   Z2      5</code></pre>
+<p><strong>rename</strong> permet de renommer les colonnes</p>
+<pre class="r"><code>rename (table, &quot;profondeur&quot; = Prof) #renommer Prof en profondeur</code></pre>
+<p><strong>arrange</strong> permet d’organiser le tableau en fonction d’une ou pluieurs colonnes.</p>
+<pre class="r"><code>arrange (table, Prof) #reéorganise le tableau avec la colonne profondeur en ordre croissant
+
+arrange (table, desc(Prof)) #reéorganise le tableau avec la colonne profondeur en ordre décroissant</code></pre>
+<p><strong>mutate</strong> permet de créer une nouvelle variable, une nouvelle colonne, à partir d’une autre variable.</p>
+<pre class="r"><code>mutate (table, ceph = Poulpe + Seiche) #créer une colonne &quot;ceph&quot; correspondant à l&#39;addition de la colonne Poulpe et de la colonne Seiche</code></pre>
+<p><strong>group_by</strong> permet de regrouper des lignes en fonction de valeurs d’une ou plusieurs colonnes. Il et utile par exemple pour appliquer les operations aux groupes de notre choix.</p>
+<pre class="r"><code>group_by (table, Zone) #regroupe les lignes en fonction de la Zone</code></pre>
+<pre><code>## # A tibble: 28 x 18
+## # Groups:   Zone [4]
+##    Sais  Zone  Mod    Prof Atherine BlennieDeRoux Canthare Castagnole
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;    &lt;int&gt;         &lt;int&gt;    &lt;int&gt;      &lt;int&gt;
+##  1 Chau~ Z1    Buse~    11        0             0        0          0
+##  2 Chau~ Z1    Buse~    11        0             0        0          0
+##  3 Chau~ Z1    Buse~    11        0             0        0          0
+##  4 Chau~ Z1    Proto    11        0             0        0          0
+##  5 Chau~ Z2    Buse~    10        0             0        0          0
+##  6 Chau~ Z2    Buse~    16        0             0        0          0
+##  7 Chau~ Z2    Buse~    10        0             0        0          0
+##  8 Chau~ Z2    Proto    14        0             0        0          0
+##  9 Chau~ Z3    Pani~    30        0             0       50          0
+## 10 Chau~ Z3    Pani~    30        0             0        0          0
+## # ... with 18 more rows, and 10 more variables: CrevetteBouquet &lt;int&gt;,
+## #   Girelle &lt;int&gt;, Oblade &lt;int&gt;, PageotAcarne &lt;int&gt;, Poulpe &lt;int&gt;,
+## #   RougetDeRoche &lt;int&gt;, Seiche &lt;int&gt;, SerranChevrette &lt;int&gt;, Sparaillon &lt;int&gt;,
+## #   Tacaud &lt;int&gt;</code></pre>
+<pre class="r"><code>slice(group_by(table, Zone),1) #selectionne la premiere ligne de chaque groupe Zone</code></pre>
+<pre><code>## # A tibble: 4 x 18
+## # Groups:   Zone [4]
+##   Sais  Zone  Mod    Prof Atherine BlennieDeRoux Canthare Castagnole
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt;    &lt;int&gt;         &lt;int&gt;    &lt;int&gt;      &lt;int&gt;
+## 1 Chau~ Z1    Buse~    11        0             0        0          0
+## 2 Chau~ Z2    Buse~    10        0             0        0          0
+## 3 Chau~ Z3    Pani~    30        0             0       50          0
+## 4 Chau~ Z4    Pani~    30        0             0        0          0
+## # ... with 10 more variables: CrevetteBouquet &lt;int&gt;, Girelle &lt;int&gt;,
+## #   Oblade &lt;int&gt;, PageotAcarne &lt;int&gt;, Poulpe &lt;int&gt;, RougetDeRoche &lt;int&gt;,
+## #   Seiche &lt;int&gt;, SerranChevrette &lt;int&gt;, Sparaillon &lt;int&gt;, Tacaud &lt;int&gt;</code></pre>
+<p><strong>sample_n</strong> et <strong>sample_frac</strong> permettent d’échantillonner vos données.</p>
+<pre class="r"><code>sample_n (table , 10) #selectionne 10 lignes au hasard
+sample_frac (table , 0.1) #selectionne 10% de l&#39;échantillon au hasard</code></pre>
+<p><strong>tally</strong> permet de compter le nombre de ligne par groupe</p>
+<pre class="r"><code>tally(table) # nombre de lignes dans le tableau</code></pre>
+<pre><code>##    n
+## 1 28</code></pre>
+<pre class="r"><code>tally(group_by(table, Zone)) # nombre de lignes par Zone</code></pre>
+<pre><code>## # A tibble: 4 x 2
+##   Zone      n
+##   &lt;chr&gt; &lt;int&gt;
+## 1 Z1        8
+## 2 Z2        8
+## 3 Z3        6
+## 4 Z4        6</code></pre>
+<p>Il existe encore d’autre fonctions pour manipuler les données. Pour explorer <strong>dplyr</strong> il existe de nombreux sites :</p>
+<ul>
+<li><a href="http://larmarange.github.io/analyse-R/manipuler-les-donnees-avec-dplyr.html" class="uri">http://larmarange.github.io/analyse-R/manipuler-les-donnees-avec-dplyr.html</a></li>
+<li><a href="https://statistique-et-logiciel-r.com/initiation-a-la-manipulation-de-donnees-avec-le-package-dplyr/" class="uri">https://statistique-et-logiciel-r.com/initiation-a-la-manipulation-de-donnees-avec-le-package-dplyr/</a></li>
+<li><a href="https://www.rdocumentation.org/packages/dplyr/versions/0.7.8" class="uri">https://www.rdocumentation.org/packages/dplyr/versions/0.7.8</a></li>
+</ul>
+</div>
