@@ -14,7 +14,7 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: Passionné par l'écologie je souhaite conserver la biodiversité. Ce site à pour but la transmission de connaissances et d'outils concernant la conservation de la vie. 
+bio: Passionné par l'écologie je souhaite conserver la biodiversité. Octopons vulgaris regroupe mes sites dédiés à la vulgarisation afin de transmettre connaissances et outils permettant la conservation de la biodiversité.
 
 #interests:
 #- Artificial Intelligence
@@ -41,12 +41,12 @@ social:
 - icon: envelope
   icon_pack: fas
   link: 'about/#contact'  # For a direct email link, use "mailto:test@example.org".
-- icon: twitter
-  icon_pack: fab
-  link: https://twitter.com/GeorgeCushen
-- icon: github
-  icon_pack: fab
-  link: https://github.com/gcushen
+# icon: twitter
+#  icon_pack: fab
+#  link: https://twitter.com/GeorgeCushen
+# icon: github
+#  icon_pack: fab
+#  link: https://github.com/gcushen
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 # - icon: cv
@@ -63,6 +63,10 @@ social:
 #- Visitors
 ---
 
-Je travaille dans le recherche, spécialisé en cétacés (plutôt odontocètes), les analyses démographiques, et les statistiques en général.
+Je me suis dédiés à la vulgarisation afin de transmettre connaissances et outils permettant la conservation de la biodiversité.
 
-Passionné par l'écologie je souhaite conserver la biodiversité. Ce site à pour but la transmission de connaissances et d'outils concernant la conservation de la vie. 
+**Je comprends R** a pour but de transmettre des informations concernant **R** et les **biostatistiques**, des outils essentiels à la recherche en écologie 
+
+
+
+
