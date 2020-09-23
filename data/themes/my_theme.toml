@@ -32,7 +32,7 @@ menu_title = "#ffffff"
 
 # Backgrounds
 background = "#2c2c2c"
-home_section_odd = "#090a0b"
+home_section_odd = "#2c2c2c"
 home_section_even = "#2c2c2c"
 
 font = "rose"

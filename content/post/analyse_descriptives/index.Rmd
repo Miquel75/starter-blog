@@ -1,0 +1,162 @@
+---
+title: "Analyses descriptives"
+categories:
+- R
+- Premiers pas
+date: "`r Sys.Date()`"
+draft: no
+featured: no
+image:
+  placement: 1
+  caption: 'Image par Image par Gerd Altmann de Pixabay'
+  focal_point: ""
+  preview_only: false
+lastmod: '2020-09-23T00:00:00Z'
+projects: []
+subtitle: Lire les données et faire les premiers plots
+summary: Bases d'analyses statistique descriptives. Regardons les indices décrivant une variable et visualisons la en faisant un graphique simple type histogramme, camembert ou autres.
+tags:
+- R
+- bases
+- lire
+- descriptives
+- Visualiser
+- plot
+authors: 
+- Miquel Pons
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+L'analyse univarié est l'analyse d'une seule variable. C'est de l'analyse descriptive. En plus de **summary** utilisé précédemment, vous pouvez employer les fonctions suivantes.
+
+**mean** permet d'obtenir la moyenne. 
+
+Si l'on prend le même jeu de donnée que précédemment.
+
+``` {r }
+
+setwd ("C:/Users/Miquel Pons/Desktop")
+
+table <- read.table("poissons.txt", sep = ";") 
+
+```
+
+On veut la moyenne de la variable profondeur "Prof"
+
+``` {r }
+
+mean (table$Prof)
+
+```
+
+
+**sd** permet d'avoir l'écart type qui donne une mesure de la dispersion des valeur. 
+
+``` {r }
+
+sd (table$Prof)
+
+```
+
+**min** donne la valeur minimum. 
+
+``` {r }
+
+min (table$Prof)
+
+```
+
+**max** donne la valeur maximum.
+
+``` {r }
+
+max (table$Prof)
+
+```
+
+**range** décrit l'étendu de votre variable. 
+
+``` {r }
+
+range (table$Prof)
+
+```
+
+**median** vous donne la médiane, la valeur permettant d'avoir autant de valeurs supérieurs la médiane que inférieurs. 
+
+``` {r }
+
+median (table$Prof)
+
+```
+
+
+**quantile** permet bien évidemment d'obtenir les quantiles, des valeurs qui divisent les données en intervalles contenant le même nombre de données. Ils permettent donc une mesure de la répartition. Comme vous pouvez le constater, le quantile qui sépare les données en deux groupes (50%) est la médiane. Les valeurs de 25%, 50% et 75% sont appelés quartiles. 1/4 des valeurs sont inferieurs au premier quartile, 3/4 des valeurs inférieurs au troisième quartile.
+
+``` {r }
+
+quantile (table$Prof)
+
+```
+
+# Visualisation 
+
+**hist** permet d'afficher un histogramme présentant la répartition d'une variable continue. 
+
+``` {r }
+
+hist (table$Prof)
+
+```
+
+
+
+**table** vous donne le nombre de lignes pour chaque valeur de votre variable. Ici vous pouvez constater qu'il n'est pas bon de nommer vos données "table" puisque cela peut porter a confusion. Nous allons donc créer un autre objet contenant table. 
+
+``` {r }
+
+
+poissons <- table
+
+table (poissons$Prof)
+
+plot (table(poissons$Prof))
+
+```
+
+**pie** permet d'afficher un visuel de la répartition d'une variable sous forme de camembert. Ce format est peu utilisé car est considéré peu intuitif visuellement pour bien voir les quantités. Cependant ça reste sympa pour des infographies ou des présentations. 
+
+``` {r }
+
+pie (table(poissons$Prof))
+
+```
+
+**plot(density())** donne la densité d'une variable quantitative.La fonction plot est la fonction général permettant la représentation graphique. Il y a beaucoup de différentes options qu'il vous appartient de découvrir. Des exemples seront données par la suite.
+
+``` {r }
+
+plot(density(poissons$Prof))
+
+```
+
+
+**boxplot** affiche une représentation graphique de la répartition des valeurs d'une variable quantitative que l'on appelle boîte à moustache.  La barre du milieu représente la médiane, le haut et le bas de la boîte représentent respectivement le 3eme et 1er quartile. Les tirets qui s'affichent éventuellement en haut et en bas réprésentent le minimum et le maximum.
+
+
+``` {r }
+
+boxplot(poissons$Prof)
+
+```
+
+**dotchart** décrit la répartition des données selon une variable. Ici le nombre d'observations (lignes) en abscisse, en fonction de la profondeur en ordonnée.
+
+``` {r }
+
+dotchart(as.matrix(table(poissons$Prof))) #étant donné que R attend une matrice pour ce graphique, il convient d'utiliser as.matrix afin de rentrer les valeurs sous forme de matrice
+
+```

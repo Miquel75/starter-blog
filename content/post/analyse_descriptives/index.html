@@ -1,0 +1,85 @@
+---
+title: "Analyses descriptives"
+categories:
+- R
+- Premiers pas
+date: "2020-09-23"
+draft: no
+featured: no
+image:
+  placement: 1
+  caption: 'Image par Image par Gerd Altmann de Pixabay'
+  focal_point: ""
+  preview_only: false
+lastmod: '2020-09-23T00:00:00Z'
+projects: []
+subtitle: Lire les données et faire les premiers plots
+summary: Bases d'analyses statistique descriptives. Regardons les indices décrivant une variable et visualisons la en faisant un graphique simple type histogramme, camembert ou autres.
+tags:
+- R
+- bases
+- lire
+- descriptives
+- Visualiser
+- plot
+authors: 
+- Miquel Pons
+---
+
+
+
+<p>L’analyse univarié est l’analyse d’une seule variable. C’est de l’analyse descriptive. En plus de <strong>summary</strong> utilisé précédemment, vous pouvez employer les fonctions suivantes.</p>
+<p><strong>mean</strong> permet d’obtenir la moyenne.</p>
+<p>Si l’on prend le même jeu de donnée que précédemment.</p>
+<pre class="r"><code>setwd (&quot;C:/Users/Miquel Pons/Desktop&quot;)
+
+table &lt;- read.table(&quot;poissons.txt&quot;, sep = &quot;;&quot;) </code></pre>
+<p>On veut la moyenne de la variable profondeur “Prof”</p>
+<pre class="r"><code>mean (table$Prof)</code></pre>
+<pre><code>## [1] 19.57143</code></pre>
+<p><strong>sd</strong> permet d’avoir l’écart type qui donne une mesure de la dispersion des valeur.</p>
+<pre class="r"><code>sd (table$Prof)</code></pre>
+<pre><code>## [1] 9.323124</code></pre>
+<p><strong>min</strong> donne la valeur minimum.</p>
+<pre class="r"><code>min (table$Prof)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<p><strong>max</strong> donne la valeur maximum.</p>
+<pre class="r"><code>max (table$Prof)</code></pre>
+<pre><code>## [1] 30</code></pre>
+<p><strong>range</strong> décrit l’étendu de votre variable.</p>
+<pre class="r"><code>range (table$Prof)</code></pre>
+<pre><code>## [1] 10 30</code></pre>
+<p><strong>median</strong> vous donne la médiane, la valeur permettant d’avoir autant de valeurs supérieurs la médiane que inférieurs.</p>
+<pre class="r"><code>median (table$Prof)</code></pre>
+<pre><code>## [1] 15</code></pre>
+<p><strong>quantile</strong> permet bien évidemment d’obtenir les quantiles, des valeurs qui divisent les données en intervalles contenant le même nombre de données. Ils permettent donc une mesure de la répartition. Comme vous pouvez le constater, le quantile qui sépare les données en deux groupes (50%) est la médiane. Les valeurs de 25%, 50% et 75% sont appelés quartiles. 1/4 des valeurs sont inferieurs au premier quartile, 3/4 des valeurs inférieurs au troisième quartile.</p>
+<pre class="r"><code>quantile (table$Prof)</code></pre>
+<pre><code>##   0%  25%  50%  75% 100% 
+##   10   11   15   30   30</code></pre>
+<div id="visualisation" class="section level1">
+<h1>Visualisation</h1>
+<p><strong>hist</strong> permet d’afficher un histogramme présentant la répartition d’une variable continue.</p>
+<pre class="r"><code>hist (table$Prof)</code></pre>
+<p><img src="/post/analyse_descriptives/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><strong>table</strong> vous donne le nombre de lignes pour chaque valeur de votre variable. Ici vous pouvez constater qu’il n’est pas bon de nommer vos données “table” puisque cela peut porter a confusion. Nous allons donc créer un autre objet contenant table.</p>
+<pre class="r"><code>poissons &lt;- table
+
+table (poissons$Prof)</code></pre>
+<pre><code>## 
+## 10 11 14 16 30 
+##  4  8  2  2 12</code></pre>
+<pre class="r"><code>plot (table(poissons$Prof))</code></pre>
+<p><img src="/post/analyse_descriptives/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><strong>pie</strong> permet d’afficher un visuel de la répartition d’une variable sous forme de camembert. Ce format est peu utilisé car est considéré peu intuitif visuellement pour bien voir les quantités. Cependant ça reste sympa pour des infographies ou des présentations.</p>
+<pre class="r"><code>pie (table(poissons$Prof))</code></pre>
+<p><img src="/post/analyse_descriptives/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><strong>plot(density())</strong> donne la densité d’une variable quantitative.La fonction plot est la fonction général permettant la représentation graphique. Il y a beaucoup de différentes options qu’il vous appartient de découvrir. Des exemples seront données par la suite.</p>
+<pre class="r"><code>plot(density(poissons$Prof))</code></pre>
+<p><img src="/post/analyse_descriptives/index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><strong>boxplot</strong> affiche une représentation graphique de la répartition des valeurs d’une variable quantitative que l’on appelle boîte à moustache. La barre du milieu représente la médiane, le haut et le bas de la boîte représentent respectivement le 3eme et 1er quartile. Les tirets qui s’affichent éventuellement en haut et en bas réprésentent le minimum et le maximum.</p>
+<pre class="r"><code>boxplot(poissons$Prof)</code></pre>
+<p><img src="/post/analyse_descriptives/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><strong>dotchart</strong> décrit la répartition des données selon une variable. Ici le nombre d’observations (lignes) en abscisse, en fonction de la profondeur en ordonnée.</p>
+<pre class="r"><code>dotchart(as.matrix(table(poissons$Prof))) #étant donné que R attend une matrice pour ce graphique, il convient d&#39;utiliser as.matrix afin de rentrer les valeurs sous forme de matrice</code></pre>
+<p><img src="/post/analyse_descriptives/index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>

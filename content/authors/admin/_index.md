@@ -1,7 +1,7 @@
 ---
 # Display name
 title: Miquel Pons
-image: 
+image: avatar.png
 # Is this the primary user of the site?
 superuser: true
 
@@ -62,7 +62,7 @@ social:
 #- Researchers
 #- Visitors
 ---
-**Je comprends R** 
+ <span style="color:#5f96d7"><b>Je comprends R<b/></span>
 
 Ce blog est la pour deux raisons. Il me permet de structurer mes connaissances et de transmettre ce que j'apprends. Peut être qu'il permettra à quelqu'un de progresser dans un projet d'écologie de la conservation.   
   

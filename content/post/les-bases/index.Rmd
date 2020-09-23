@@ -48,6 +48,16 @@ projects: []
 
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_knit$set(root.dir = normalizePath("C:/Users/Miquel Pons/Desktop"))
+
+knitr::kable
+table <- function(data) { knitr::kable(data) }
+
+```
+
 Avant d'entrer au coeur des tests statistiques, modèles et autres espiegleries, voici quelques bases qu'il serait pratique d'avoir. Ces bases seront survolés rapidement. Des liens seront proposer pour approndir et renforcer ces bases.
 
 * <https://cran.r-project.org/doc/contrib/Goulet_introduction_programmation_R.pdf>

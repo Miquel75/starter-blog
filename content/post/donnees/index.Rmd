@@ -14,7 +14,7 @@ image:
 lastmod: '2020-09-22T00:00:00Z'
 projects: []
 subtitle: Importer et manipuler les données
-summary: A quels types de données pourrions nous être confrontés ?
+summary: Apprendre  à importer et exporter les données. Les manipuler avec dplyr.
 tags:
 - R
 - bases
@@ -30,6 +30,10 @@ authors:
 knitr::opts_chunk$set(echo = TRUE)
 
 knitr::opts_knit$set(root.dir = normalizePath("C:/Users/Miquel Pons/Desktop"))
+
+knitr::kable
+table <- function(data) { knitr::kable(data) }
+
 ```
 
 Avant de pouvoir traiter vos données sur R, il est bon de paramétrer son repertoire de travail. Pour cela il faut indiquer à R dans quel dossier de votre ordinateur vous souhaitez travailler, un dossier ou vous avez préalablement mis vos données.  **setwd()** est utilisé pour indiquer votre répertoire. On utilise **getwd()** pour afficher le répertoire dans lequel on se trouve.
