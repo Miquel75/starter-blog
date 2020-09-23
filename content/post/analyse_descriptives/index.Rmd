@@ -8,7 +8,7 @@ draft: no
 featured: no
 image:
   placement: 1
-  caption: ''
+  caption: 'MP'
   focal_point: ""
   preview_only: false
 lastmod: '2020-09-23T00:00:00Z'
