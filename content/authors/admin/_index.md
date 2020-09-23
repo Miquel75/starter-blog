@@ -66,7 +66,7 @@ social:
 
 Ce blog me permet de structurer mes connaissances et de transmettre ce que j'apprends. Il a pour but de transmettre des informations concernant **R** et les **biostatistiques**, des outils essentiels à la recherche en écologie.  
   
-Peut être qu'il permettra à quelqu'un de progresser dans un projet d'écologie de la conservation.   
+Qu'il puisse servir un jour à quelqu'un de coup de pouce dans un projet en écologie.  
   
       
 <span style="color:#4f5356"><i>Dis moi et j'oublie. Montre moi et je me souviens. Implique moi et je comprends. <br/>"Xun Zi"<i/></span> 
