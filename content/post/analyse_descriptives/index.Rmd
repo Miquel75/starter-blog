@@ -11,7 +11,7 @@ image:
   caption: ''
   focal_point: ""
   preview_only: false
-lastmod: '2020-09-23T00:00:00Z'
+lastmod: '2020-09-22T00:00:00Z'
 projects: []
 subtitle: Lire les données et faire les premiers plots
 summary: Bases d'analyses statistique descriptives. Regardons les indices décrivant une variable et visualisons la en faisant un graphique simple type histogramme, camembert ou autres.
