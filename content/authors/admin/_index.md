@@ -11,7 +11,7 @@ role: Marine Biologist
 # Organizations/Affiliations
 organizations:
 - name: Octopons vulgaris
-  url: ""
+  url: "https://commons.wikimedia.org/wiki/File:Octopus_vulgaris_Merculiano.jpg"
 
 # Short bio (displayed in user profile at end of posts)
 bio: Passionné par l'écologie, je souhaite conserver la biodiversité. Octopons vulgaris regroupe mes sites dédiés à la vulgarisation afin de transmettre connaissances et outils permettant la conservation de la biodiversité.
@@ -62,10 +62,19 @@ social:
 #- Researchers
 #- Visitors
 ---
+**Je comprends R** 
 
-Je me suis dédiés à la vulgarisation afin de transmettre connaissances et outils permettant la conservation de la biodiversité.
+Ce blog est la pour deux raisons. Il me permet de structurer mes connaissances et de transmettre ce que j'apprends. Peut être qu'il permettra à quelqu'un de progresser dans un projet d'écologie de la conservation.   
+  
+a pour but de transmettre des informations concernant **R** et les **biostatistiques**, des outils essentiels à la recherche en écologie.
+<br/>
+  
+ <br/>
+ 
+ <br/>
+      
+<span style="color:#4f5356"><i>Dis moi et j'oublie. Montre moi et je me souviens. Implique moi et je comprends. <br/>"Xun Zi"<i/></span> 
 
-**Je comprends R** a pour but de transmettre des informations concernant **R** et les **biostatistiques**, des outils essentiels à la recherche en écologie 
 
 
 

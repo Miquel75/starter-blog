@@ -11,17 +11,28 @@ primary = "#1994d5"
 menu_primary = "#162a6d"
 menu_text = "#ffffff"
 menu_text_active = "#ffffff"
-menu_title = "#fff"
+menu_title = "#fffff"
 
 # Backgrounds
-background = "#e7e7e7"
-home_section_odd = "#e7e7e7"
-home_section_even = "#d2d2d2"
+background = "#f0f0f0"
+home_section_odd = "#f0f0f0"
+home_section_even = "#f0f0f0"
 
 font = "rose"
 
 [dark]
-  background = "#090a0b"
-  home_section_odd = "#090a0b"
-  home_section_even = "#090a0b"
-  menu_primary = "#090a0b"
+
+primary = "#1994d5"
+
+# Menu
+menu_primary = "#090a0b"
+menu_text = "#ffffff"
+menu_text_active = "#ffffff"
+menu_title = "#ffffff"
+
+# Backgrounds
+background = "#2c2c2c"
+home_section_odd = "#090a0b"
+home_section_even = "#2c2c2c"
+
+font = "rose"

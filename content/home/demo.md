@@ -32,6 +32,6 @@ design:
 <br/>
 
 
-**"Je comprends R" a pour objectif la vulgarisation et transmission d'informations concernant <span       style="color:#8bb8e8"><b>R<b/></span> et les <span style="color:#e8a48b"><b>biostatistiques<b/></span>,  outils essentiels à la recherche en écologie.**
+**Pour ceux qui ne comprennent rien à <span style="color:#8bb8e8"><b>R<b/></span> et aux <span style="color:#e8a48b"><b>statistiques<b/></span>, outils essentiels à la recherche en <span style="color:#afe5ac"><b>écologie<b/></span>.**
 
 
