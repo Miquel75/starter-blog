@@ -284,5 +284,6 @@ while (a < 15) {
 a
 ```
 
-
+Je vous conseil de regarder fréquemment l'aide R. 
+Pour cela il suffit d'écrire help(fonction) ou ?fonction, par exemple `?table()`ou `?tally()`.
 

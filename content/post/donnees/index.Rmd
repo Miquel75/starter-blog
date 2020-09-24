@@ -39,7 +39,6 @@ table <- function(data) { knitr::kable(data) }
 Avant de pouvoir traiter vos données sur R, il est bon de paramétrer son repertoire de travail. Pour cela il faut indiquer à R dans quel dossier de votre ordinateur vous souhaitez travailler, un dossier ou vous avez préalablement mis vos données.  **setwd()** est utilisé pour indiquer votre répertoire. On utilise **getwd()** pour afficher le répertoire dans lequel on se trouve.
 
 
-
 ``` {r}
 
 setwd ("C:/Users/Miquel Pons/Desktop")
@@ -51,8 +50,6 @@ getwd()
 Le mieux reste de commencer un nouveau projet : File -> New Project
 Lorqu'on veut travailler desuss, il suffit alors d'ouvrir votre projet en cliquant sur "New-project.Rproj" ou d'aller le chercher File -> Open Project.
 De cette façon vous aurez des dossiers de travail beaucoup plus propre. 
-
-Charger les librairies
 
 
 ### Importer de données
@@ -211,5 +208,4 @@ Il existe encore d'autre fonctions pour manipuler les données. Pour explorer **
 * <http://larmarange.github.io/analyse-R/manipuler-les-donnees-avec-dplyr.html>
 * <https://statistique-et-logiciel-r.com/initiation-a-la-manipulation-de-donnees-avec-le-package-dplyr/>
 * <https://www.rdocumentation.org/packages/dplyr/versions/0.7.8>
-
 

@@ -47,6 +47,11 @@ projects: []
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Pour reproduire le script, télécharger les données :  
+- <a href="/files/poissons.txt">poissons.txt</a>  
+
+## Analyse descriptive
+
 L'analyse univarié est l'analyse d'une seule variable. C'est de l'analyse descriptive. En plus de **summary** utilisé précédemment, vous pouvez employer les fonctions suivantes.
 
 **mean** permet d'obtenir la moyenne. 

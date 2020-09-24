@@ -46,6 +46,10 @@ projects: []
 
 
 
+<p>Pour reproduire le script, télécharger les données :<br />
+- <a href="/files/poissons.txt">poissons.txt</a></p>
+<div id="analyse-descriptive" class="section level2">
+<h2>Analyse descriptive</h2>
 <p>L’analyse univarié est l’analyse d’une seule variable. C’est de l’analyse descriptive. En plus de <strong>summary</strong> utilisé précédemment, vous pouvez employer les fonctions suivantes.</p>
 <p><strong>mean</strong> permet d’obtenir la moyenne.</p>
 <p>Si l’on prend le même jeu de donnée que précédemment.</p>
@@ -74,6 +78,7 @@ table &lt;- read.table(&quot;poissons.txt&quot;, sep = &quot;;&quot;) </code></p
 <pre class="r"><code>quantile (table$Prof)</code></pre>
 <pre><code>##   0%  25%  50%  75% 100% 
 ##   10   11   15   30   30</code></pre>
+</div>
 <div id="visualisation" class="section level1">
 <h1>Visualisation</h1>
 <p><strong>hist</strong> permet d’afficher un histogramme présentant la répartition d’une variable continue.</p>

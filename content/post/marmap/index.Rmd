@@ -1,0 +1,140 @@
+---
+title: 'Marmap : Carte bathymétrique'
+subtitle: 'Comment faire une carte avec relief'
+summary: Utiliser le package marmap pour faire une carte bathymétrique. 
+authors:
+- Miquel Pons
+
+tags:
+- R
+- cartographie
+- map
+- bathymétrie
+
+categories:
+- R
+- map
+
+date: Sys.Date()
+lastmod: "2020-09-25T00:00:00Z"
+featured: false
+draft: false
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Placement options: 1 = Full column width, 2 = Out-set, 3 = Screen-width
+# Focal point options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
+image:
+  placement: 1
+#  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/CpkOjOcXdUY)'
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_knit$set(root.dir = normalizePath("C:/Users/Miquel Pons/Documents/starter-blog/static/files"))
+
+knitr::kable
+table <- function(data) { knitr::kable(data) }
+
+```
+
+Pour reproduire le script, télécharger les données :  
+- <a href="/files/poissons.csv">poissons.csv</a>  
+
+
+# Carte bathymétrique avec marmap
+
+Installer le package marmap si ce n'est pas déjà fait
+```{r, eval=FALSE}
+install.packages("marmap")
+```
+
+Charger le package marmap, les données, et des packages permettant de facilement manipuler ces données
+
+```{r message=FALSE, warning=FALSE, results = 'hide'}
+library(marmap)
+
+library(dplyr)
+library(tidyr)
+
+#on importe les données
+donnees<-read.csv2('donnees.csv',header=TRUE,sep=';')
+
+#Selectionner les données utiles pour faire les cartes
+names(donnees)
+donnees_filt<-donnees %>%
+ dplyr::select(1,CLEOBS, NOMCITE, X, Y, DATEDEBUT) 
+
+#visualiser les données manquantes
+sapply(donnees_filt,function(x) sum(is.na(x)))
+
+#supprimer les lignes avec valeurs manquantes, fonction drop_na du package 'tidyr'
+donnees_na <- donnees_filt %>% drop_na(X,Y)
+
+
+```
+
+**Carte de répartition des données **
+
+```{r message=FALSE, warning=FALSE, results = 'hide'}
+#renommer si nécessaire le nom des variables de nos observations
+colnames(donnees_na)<-c("CLEOBS","NOMCITE","LON","LAT","DATEDEBUT")
+#format numérique pour les données de latitudes et de longitudes
+donnees_na$LON<-as.numeric(as.character(donnees_na$LON))
+donnees_na$LAT<-as.numeric(as.character(donnees_na$LAT))
+
+#quel taille devra faire notre carte pour accueillir tous les poins ? Minimum et maximum
+max(donnees_na$LON)
+max(donnees_na$LAT)
+min(donnees_na$LON)
+min(donnees_na$LAT)
+
+#création d'un data frame pour faire la carte
+donnees_df<- data.frame(donnees_na$LON, donnees_na$LAT, donnees_na$NOMCITE)
+colnames(donnees_df)<-c("LON", "LAT","NOMCITE")
+head(donnees_df)
+#on récupère les données de bathymétrie avec getNOAA.bathy, une fonction de marmap.
+#resolution indique la précision 1 étant la plus précise, 10 la plus grossière. Keep = TRUE permet de garder en mémoire les données de bathymétrie importés.
+map <- getNOAA.bathy(lon1 = 3, lon2 = 5,
+                     lat1 = 39.5, lat2 = 40.5,  resolution = 1, keep = T)
+#on prépare le fond bleu la mer, gris les terres
+blues <- c("lightsteelblue4", "lightsteelblue3",
+           "lightsteelblue2", "lightsteelblue1")
+greys <- c(grey(0.6), grey(0.93), grey(0.99))
+
+#on trace la carte
+plot(map, image = TRUE, land = TRUE, lwd = 0.03,
+     bpal = list(c(0, max(map), greys),
+                 c(min(map), 0, blues)))
+
+#ajouter les points et la légende
+
+table(donnees_df$NOMCITE)
+donnees_df<- donnees_df %>% mutate(NOMCITE= trimws(NOMCITE)) 
+
+especes<-factor(donnees_df$NOMCITE)
+#couleurs<- rainbow(length(levels(especes)))
+couleurs2<-c("hotpink2",  "aquamarine4", "deeppink4", "cadetblue", "coral4", "salmon", "tan1", 
+             "deeppink", "darkblue", "blueviolet", "red", "blue", "aquamarine", "cornflowerblue", 
+             "plum1", "burlywood4")
+
+points(donnees_df, col=couleurs2[especes], pch=19, cex=0.7)
+title(main = "Carte de répartition poissons")
+legend("bottom", pch = 19, legend = levels(especes), col = couleurs2,
+       cex = 1, ncol=6, bty="n", pt.cex = 1, text.col = "black")
+
+
+```
+
