@@ -12,7 +12,7 @@ headless: true
 # Order that this section appears on the page.
 weight: 15
 
-title: <span style="color:#d2d2d2"><b>Je comprends<b/></span>  <span style="color:#8bb8e8"><b>R<b/></span>
+title: <span style="color:#d2d2d2"><b>Je comprends<b/></span>  <span style="color:#5dc4ff"><b>R<b/></span>
 subtitle: "***Octopons vulgaris***"
 
 
@@ -32,6 +32,6 @@ design:
 <br/>
 
 
-**Pour ceux qui ne comprennent rien à <span style="color:#8bb8e8"><b>R<b/></span> et aux <span style="color:#e8a48b"><b>statistiques<b/></span>, outils essentiels à la recherche en <span style="color:#afe5ac"><b>écologie<b/></span>.**
+**Pour ceux qui ne comprennent rien à <span style="color:#5dc4ff"><b>R<b/></span> et aux <span style="color:#e8a48b"><b>statistiques<b/></span>, outils essentiels à la recherche en <span style="color:#afe5ac"><b>écologie<b/></span>.**
 
 
