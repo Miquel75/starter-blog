@@ -53,21 +53,24 @@ table <- function(data) { knitr::kable(data) }
 Pour reproduire le script, télécharger les données :  
 - <a href="/files/poissons.csv">poissons.csv</a>  
 
-# Carte bathymétrique avec marmap
+### Preparer l'envrionnement et les données
 
 Installer le package marmap si ce n'est pas déjà fait
 ```{r, eval=FALSE}
 install.packages("marmap")
 ```
 
-Charger le package marmap, les données, et des packages permettant de facilement manipuler ces données
+Charger le package marmap et des packages permettant de facilement manipuler ces données
 
 ```{r message=FALSE, warning=FALSE, results = 'hide'}
 library(marmap)
-
 library(dplyr)
 library(tidyr)
+```
 
+Importer les données (à télécharger ici <a href="/files/poissons.csv">poissons.csv</a> ) et les manipuler pour avoir le tableau qui nous intéresse. 
+
+```{r message=FALSE, warning=FALSE, results = 'hide'}
 #on importe les données
 donnees<-read.csv2('donnees.csv',header=TRUE,sep=';')
 
@@ -76,16 +79,16 @@ names(donnees)
 donnees_filt<-donnees %>%
  dplyr::select(1,CLEOBS, NOMCITE, X, Y, DATEDEBUT) 
 
-#visualiser les données manquantes
+#visualiser les données manquantes, le nombre de NA
 sapply(donnees_filt,function(x) sum(is.na(x)))
 
 #supprimer les lignes avec valeurs manquantes, fonction drop_na du package 'tidyr'
-donnees_na <- donnees_filt %>% drop_na(X,Y)
+donnees_na <- donnees_filt %>% drop_na(X,Y, NOMCITE)
 
 
 ```
 
-**Carte de répartition des données **
+Renommer et mettre lat et lon en format numérique.
 
 ```{r message=FALSE, warning=FALSE, results = 'hide'}
 #renommer si nécessaire le nom des variables de nos observations
@@ -93,21 +96,37 @@ colnames(donnees_na)<-c("CLEOBS","NOMCITE","LON","LAT","DATEDEBUT")
 #format numérique pour les données de latitudes et de longitudes
 donnees_na$LON<-as.numeric(as.character(donnees_na$LON))
 donnees_na$LAT<-as.numeric(as.character(donnees_na$LAT))
+```
 
+Trouver les limites, le cadre de notre map
+
+```{r message=FALSE, warning=FALSE, results = 'hide'}
 #quel taille devra faire notre carte pour accueillir tous les poins ? Minimum et maximum
 max(donnees_na$LON)
 max(donnees_na$LAT)
 min(donnees_na$LON)
 min(donnees_na$LAT)
+```
+On garde seulement lon lat et une variable qui définit notre observation; ici NOMCITE donne l'espèce
 
+```{r message=FALSE, warning=FALSE, results = 'hide'}
 #création d'un data frame pour faire la carte
 donnees_df<- data.frame(donnees_na$LON, donnees_na$LAT, donnees_na$NOMCITE)
-colnames(donnees_df)<-c("LON", "LAT","NOMCITE")
 head(donnees_df)
-#on récupère les données de bathymétrie avec getNOAA.bathy, une fonction de marmap.
+colnames(donnees_df) <- c("LON", "LAT", "NOMCITE")
+```
+
+### Construire la map
+
+On récupère les données de bathymétrie avec getNOAA.bathy, une fonction de marmap, On donne les couleurs que l'on souhaite pour l'eau (blues) et la terre (greys) et on plot la map.
+On ajoute les points, un titre et une légende a la map
+
+
+```{r message=FALSE, warning=FALSE, results = 'hide'}
 #resolution indique la précision 1 étant la plus précise, 10 la plus grossière. Keep = TRUE permet de garder en mémoire les données de bathymétrie importés.
 map <- getNOAA.bathy(lon1 = 3, lon2 = 5,
                      lat1 = 39.5, lat2 = 40.5,  resolution = 1, keep = T)
+
 #on prépare le fond bleu la mer, gris les terres
 blues <- c("lightsteelblue4", "lightsteelblue3",
            "lightsteelblue2", "lightsteelblue1")
@@ -118,21 +137,20 @@ plot(map, image = TRUE, land = TRUE, lwd = 0.03,
      bpal = list(c(0, max(map), greys),
                  c(min(map), 0, blues)))
 
-#ajouter les points et la légende
-
-table(donnees_df$NOMCITE)
-donnees_df<- donnees_df %>% mutate(NOMCITE= trimws(NOMCITE)) 
-
+#créer un objet facteur espèce
 especes<-factor(donnees_df$NOMCITE)
-#couleurs<- rainbow(length(levels(especes)))
-couleurs2<-c("hotpink2",  "aquamarine4", "deeppink4", "cadetblue", "coral4", "salmon", "tan1", 
-             "deeppink", "darkblue", "blueviolet", "red", "blue", "aquamarine", "cornflowerblue", 
-             "plum1", "burlywood4")
+summary(especes)
+#un objet couleur avec le nombre de couleur correspondant au nombre d'espèce
+couleurs<-c("hotpink2",  "aquamarine4")
 
-points(donnees_df, col=couleurs2[especes], pch=19, cex=0.7)
+#On ajoute les points du jeu de données data_df, avec les couleurs en fonction du facteur de l'espèce, pch représente le type de points, cex la taille
+points(donnees_df, col=couleurs[especes], pch=19, cex=0.7)
+
+#On ajoute un titre
 title(main = "Carte de répartition poissons")
-legend("bottom", pch = 19, legend = levels(especes), col = couleurs2,
-       cex = 1, ncol=6, bty="n", pt.cex = 1, text.col = "black")
+#Et la légende, "bottom" pour la mettre en bas, legend = levels(especes) pour avoir une légende par espèce, col les couleurs, cex la taille, ncol le nombre de colonnes, pt.cex la taille de la légende et tex.col la couleur du texte. 
+legend("bottom", pch = 19, legend = levels(especes), col = couleurs,
+       cex = 1, ncol=1, bty="n", pt.cex = 1, text.col = "black")
 
 
 ```
