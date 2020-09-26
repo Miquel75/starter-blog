@@ -209,7 +209,7 @@ L'erreur résiduel semble bien suivre une loi normale.
 C'est quand la dispersion est homogène, l'ensemble des erreurs à une variance similaire.
  
 ```{r}
-par(mfrow=c(2,2))
+par(mfrow=c(2,2)) #rentrer 4 plots 2x2
 plot(mod)
 ```
 
