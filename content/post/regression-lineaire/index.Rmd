@@ -17,7 +17,7 @@ categories:
 - R
 - Statistiques
 - Premiers pas
-- Modèles
+- Modélisation
 
 date: Sys.Date()
 lastmod: "2020-09-26T00:00:00Z"
@@ -61,13 +61,13 @@ table <- function(data) { knitr::kable(data) }
 
 
 ## Qu'est ce qu'une régression linéaire ?
-C'est un modèle (une équation) qui cherche à relier de façon linéaire une variable, dite expliquée, à une ou plusieurs autres variables, dites explicatives. 
+C'est une modélisation statistique (une équation) qui cherche à relier de façon linéaire une variable dite expliquée, à une ou plusieurs autres variables, dites explicatives. 
 
-L'exemple le plus simple avec une seule variable explicative c'est :  
+La régression linéaire simple avec une seule variable explicative c'est :  
   ` y = a.x + b + e  `  <br/>
-y est la variable expliquée (dépendante)    <br/>
-x est la variable explicative (indépendante)    <br/>
-b est le coefficient de la régression      <br/>
+y est la variable expliquée (dépendante), que nous souhaitons décrire et prédire. Souvent représentée sur l'axe des ordonnées.   <br/>
+x est la variable explicative (indépendante), permettant de décrire et prédire y, souvent représentée sur l'axe des abscisses.    <br/>
+b est l'ordonnée à l'origine.      <br/>
 e est l'erreur    
 
 ## A quoi ça sert ?
@@ -113,24 +113,26 @@ La profondeur en class character peut être source de problème. On le veut en n
 donnees_na$PROF<-as.numeric(donnees_na$PROF)
 donnees_na$TAILLE<-as.numeric(donnees_na$TAILLE)
 
-summary(donnees_na)
+class(donnees_na$PROF)
 ```
 
 
-On fait notre régression linéaire entre la profondeur et la taille des poissons de notre échantillon et on visualise le résultat. 
+On produit notre modèle de régression linéaire entre la profondeur et la taille des poissons de notre échantillon et on visualise le résultat. 
 
 ```{r}
 #régression linéaire avec fonction lm (?lm pour l'aide R)
-mod<-lm(PROF~TAILLE, donnees_na)
+mod<-lm(TAILLE~PROF, donnees_na)
 #visualiser les données
-plot(donnees_na$TAILLE, donnees_na$PROF)
+plot(donnees_na$PROF, donnees_na$TAILLE)
 abline(mod)
 title("Régression linéaire")
 summary(mod)
-#visualiser la distance des points par rapport au modèle
-segments(donnees_na$TAILLE,fitted(mod),donnees_na$TAILLE, donnees_na$PROF)
+#visualiser les résidus, étant la distance des points par rapport au modèle
+segments(donnees_na$PROF,fitted(mod),donnees_na$PROF, donnees_na$TAILLE)
 #frame valeurs taille
-pred.frame<-data.frame(TAILLE= 1.50:41)
+min(donnees_na$PROF)
+max(donnees_na$PROF)
+pred.frame<-data.frame(PROF= 5:40)
 #predict permet des predictions d'après les résultats du modèle
 pc<-predict(mod, interval="confidence", newdata=pred.frame)
 pp<-predict(mod, interval="prediction", newdata=pred.frame)
@@ -150,22 +152,85 @@ summary(mod)
 **Call** -> indique la formule utilisée.  
 **Residuals** -> indique la différence entre la valeur observée et la valeur prédite par le modèle.   
 **Coefficient** -> donne la valeur de la pente : 
-La pente correspond à l'évolution de la taille en fonction de la profondeur. Ici, pour 1 mètre de profondeur supplémentaire, la taille des poissons augmentera de 0.57969cm. Intercept est la valeur du reste.    
+La pente correspond à l'évolution de la taille en fonction de la profondeur. Ici, pour 1 mètre de profondeur supplémentaire, la taille des poissons augmentera de 1.068cm. Intercept est la valeur du reste.    
             -> Std. Error la précision de l'estimation.  
             -> t value le coefficient (pente) / par Std. Error, test si le coeff est significativement différent de zéro.  
             -> Pr(>|t|) le niveau de signification  
 **Residual Standard Error** -> déviation standard résiduel, c'est mieux quand ce chiffre est petit.  
-**Multiple R-squared** -> R² est la proportion de variance expliquée par le modèle. *Plus R² est proche de 1, plus la variabilité des données est expliqué par le modèle.*  Adjusted R-squared est plus précis dans le cas d'une régression multiple. La racine carré de R² donne le coefficient de corrélation.    
+**Multiple R-squared** -> R² est la proportion de variance expliquée par le modèle. *Plus R² est proche de 1, plus la variabilité des données est expliqué par le modèle.* Plus les résidus sont petits, plus R² est grand. Adjusted R-squared est plus précis dans le cas d'une régression multiple. La racine carré de R² donne le coefficient de corrélation.    
 **F-statistic** -> vérifie si le poids d'une variable est significativement différent de zéro. Si la p-value est suppérieur à 0.05, le modèle ne fait rien d'intéressant. Ici ce n'est pas le cas, la variable explicative de la profondeur semble affecter la taille des poissons.    
 
 Le calcul du **coefficient de corrélation** peut aussi se faire avec la fonction  `cor`
 
 ```{r}
-cor(donnees_na$TAILLE, donnees_na$PROF)
+cor(donnees_na$PROF, donnees_na$TAILLE)
 ```
 On voit que le coefficient de corrélation entre la profondeur et la taille des poissons de notre échantillon est de 0.7866876.  
   
 Si R = 0, il n'y a pas de relation linéaire entre les variables, si R = 1 la relation linéaire est parfaite, tous les points sont sur la droite.
   
-  
 Les variables PROF et TAILLE semblent reliées étant donné la correlation entre ces variables, le coefficient de la pente et la p-value. Etant donné le R² la profondeur a un fort impact sur la taille mais il reste cependant une partie inexpliquée. 
+
+## Valider le modèle en testant les hypothèses sur lequel il repose
+La régression linéaire repose sur des hypothèses: normalité, linearité, homoscedasticité, and absence of multicollinearity
+
+**Normalité**
+
+Afin de faire des inférences valides issu de ce modèle (pour vérifier les prédictions basées sur cette droite), il faut tester la normalité des erreurs résiduels. Les valeurs résiduels doivent suivre une distribution normale pour que le modèle soit robuste.   
+  
+Plusieurs manière de tester cela:
+
+Un histograme pour visualiser si la distribution suit une loi normale
+
+```{r}
+hist(mod$residuals)
+
+```
+Un qqplot(quantile-quantile) comparant la distribution des résidus à une distribution normale
+
+```{r}
+qqnorm(mod$residuals)
+qqline(mod$residuals)
+
+```
+
+Ces deux graphiques semblent indiqués une loi normale. 
+
+Un shapiro test dont l'hypothèse H0 est que l'échantillon suit une loi normale
+
+```{r}
+shapiro.test(mod$residuals)
+```
+La p-value est supérieur à 0.05, on ne peut PAS dire que les résidus ne suivent PAS une loi normale.
+ 
+L'erreur résiduel semble bien suivre une loi normale.
+ 
+**L'homoscédasticité** 
+C'est quand la dispersion est homogène, l'ensemble des erreurs à une variance similaire.
+ 
+```{r}
+par(mfrow=c(2,2))
+plot(mod)
+```
+
+Plus la ligne rouge est proche de zéro plus il y a de l'homoscédasticité. Plus elle s'en sépare plus il y a de l'hétéroscédasticité.
+On peut le tester statistiquement avec le test de Breusch Pagan et le ncvTest.
+
+```{r message=FALSE, warning=FALSE, results = 'hide'}
+library(lmtest)
+library(car)
+```
+
+```{r}
+lmtest::bptest(mod)
+car::ncvTest(mod)
+```
+
+La P-value est supérieur à 0.05. On ne peut pas rejeter l'hypothèse nulle, de l'homoscédasticité. des données. Ces données auront donc besoin d'être plus travaillées (transformation log ou autre) pour obtenir un modèle robuste. 
+
+
+**Linéarité**
+Les variables ont une relation linéaire. Lorsque la normalité et l'homoscédasticité sont attestés, il n'y a pas a s'inquiété pour ça.
+
+**Multicollinearité**
+C'est lorsque des variables explicatives sont très corrélés les unes aux autres, cela peut fausser les résultats. Il faut donc vérifier les coefficients de corrélation, voir si certaines dépassent 0.80, et vérifier le VIF. Nul besoin de s'en inquiéter ici nous n'avons qu'une seule variable explicative (indépendante).
