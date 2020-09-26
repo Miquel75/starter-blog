@@ -208,7 +208,8 @@ La p-value est supérieur à 0.05, on ne peut PAS dire que les résidus ne suive
  
 L'erreur résiduel semble bien suivre une loi normale.
  
-**L'homoscédasticité** 
+**L'homoscédasticité**  
+
 C'est quand la dispersion est homogène, l'ensemble des erreurs à une variance similaire.
  
 ```{r}
@@ -232,8 +233,10 @@ car::ncvTest(mod)
 La P-value est supérieur à 0.05. On ne peut pas rejeter l'hypothèse nulle, de l'homoscédasticité. des données. Ces données auront donc besoin d'être plus travaillées (transformation log ou autre) pour obtenir un modèle robuste. 
 
 
-**Linéarité**
+**Linéarité**  
+
 Les variables ont une relation linéaire. Lorsque la normalité et l'homoscédasticité sont attestés, il n'y a pas a s'inquiété pour ça.
 
-**Multicollinearité**
+**Multicollinearité**  
+
 C'est lorsque des variables explicatives sont très corrélés les unes aux autres, cela peut fausser les résultats. Il faut donc vérifier les coefficients de corrélation, voir si certaines dépassent 0.80, et vérifier le VIF. Nul besoin de s'en inquiéter ici nous n'avons qu'une seule variable explicative (indépendante).

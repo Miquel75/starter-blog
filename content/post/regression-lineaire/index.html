@@ -204,8 +204,8 @@ qqline(mod$residuals)</code></pre>
 ## W = 0.97797, p-value = 0.8282</code></pre>
 <p>La p-value est supérieur à 0.05, on ne peut PAS dire que les résidus ne suivent PAS une loi normale.</p>
 <p>L’erreur résiduel semble bien suivre une loi normale.</p>
-<p><strong>L’homoscédasticité</strong>
-C’est quand la dispersion est homogène, l’ensemble des erreurs à une variance similaire.</p>
+<p><strong>L’homoscédasticité</strong></p>
+<p>C’est quand la dispersion est homogène, l’ensemble des erreurs à une variance similaire.</p>
 <pre class="r"><code>par(mfrow=c(2,2)) #rentrer 4 plots 2x2
 plot(mod)</code></pre>
 <p><img src="/post/regression-lineaire/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
@@ -224,8 +224,8 @@ library(car)</code></pre>
 ## Variance formula: ~ fitted.values 
 ## Chisquare = 1.396593, Df = 1, p = 0.23729</code></pre>
 <p>La P-value est supérieur à 0.05. On ne peut pas rejeter l’hypothèse nulle, de l’homoscédasticité. des données. Ces données auront donc besoin d’être plus travaillées (transformation log ou autre) pour obtenir un modèle robuste.</p>
-<p><strong>Linéarité</strong>
-Les variables ont une relation linéaire. Lorsque la normalité et l’homoscédasticité sont attestés, il n’y a pas a s’inquiété pour ça.</p>
-<p><strong>Multicollinearité</strong>
-C’est lorsque des variables explicatives sont très corrélés les unes aux autres, cela peut fausser les résultats. Il faut donc vérifier les coefficients de corrélation, voir si certaines dépassent 0.80, et vérifier le VIF. Nul besoin de s’en inquiéter ici nous n’avons qu’une seule variable explicative (indépendante).</p>
+<p><strong>Linéarité</strong></p>
+<p>Les variables ont une relation linéaire. Lorsque la normalité et l’homoscédasticité sont attestés, il n’y a pas a s’inquiété pour ça.</p>
+<p><strong>Multicollinearité</strong></p>
+<p>C’est lorsque des variables explicatives sont très corrélés les unes aux autres, cela peut fausser les résultats. Il faut donc vérifier les coefficients de corrélation, voir si certaines dépassent 0.80, et vérifier le VIF. Nul besoin de s’en inquiéter ici nous n’avons qu’une seule variable explicative (indépendante).</p>
 </div>
