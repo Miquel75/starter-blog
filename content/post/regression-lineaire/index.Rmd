@@ -1,7 +1,7 @@
 ---
 title: 'Régression linéaire'
-subtitle: 'Lier deux variables entre elles'
-summary: Une regression linéaire, à quoi ça sert ?  
+subtitle: 'Lier deux variables entre elles.'
+summary: Une regression linéaire, à quoi ça sert ? 
 authors:
 - Miquel Pons
 
@@ -12,6 +12,9 @@ tags:
 - corrélation
 - lm
 - cor
+- shapiro
+- bptest
+- lmtest
 
 categories:
 - R
@@ -19,8 +22,9 @@ categories:
 - Premiers pas
 - Modélisation
 
+
 date: Sys.Date()
-lastmod: "2020-09-26T00:00:00Z"
+lastmod: "2020-09-27T00:00:00Z"
 featured: false
 draft: false
 
@@ -43,7 +47,6 @@ projects: []
 
 
 ---
-
 
 
 
