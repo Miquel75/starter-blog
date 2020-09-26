@@ -51,7 +51,7 @@ table <- function(data) { knitr::kable(data) }
 ```
 
 Pour reproduire le script, télécharger les données :  
-- <a href="/files/poissons.csv">poissons.csv</a>  
+- <a href="/files/donnees.csv">donnees.csv</a>  
 
 ### Preparer l'envrionnement et les données
 
@@ -68,7 +68,7 @@ library(dplyr)
 library(tidyr)
 ```
 
-Importer les données (à télécharger ici <a href="/files/poissons.csv">poissons.csv</a> ) et les manipuler pour avoir le tableau qui nous intéresse. 
+Importer les données (à télécharger ici <a href="/files/donnees.csv">donnees.csv</a> ) et les manipuler pour avoir le tableau qui nous intéresse. 
 
 ```{r message=FALSE, warning=FALSE, results = 'hide'}
 #on importe les données
@@ -77,13 +77,13 @@ donnees<-read.csv2('donnees.csv',header=TRUE,sep=';')
 #Selectionner les données utiles pour faire les cartes
 names(donnees)
 donnees_filt<-donnees %>%
- dplyr::select(1,CLEOBS, NOMCITE, X, Y, DATEDEBUT) 
+ dplyr::select(1,CLEOBS, ESP, X, Y, DATEDEBUT) 
 
 #visualiser les données manquantes, le nombre de NA
 sapply(donnees_filt,function(x) sum(is.na(x)))
 
 #supprimer les lignes avec valeurs manquantes, fonction drop_na du package 'tidyr'
-donnees_na <- donnees_filt %>% drop_na(X,Y, NOMCITE)
+donnees_na <- donnees_filt %>% drop_na(X,Y, ESP)
 
 
 ```
@@ -92,7 +92,7 @@ Renommer et mettre lat et lon en format numérique.
 
 ```{r message=FALSE, warning=FALSE, results = 'hide'}
 #renommer si nécessaire le nom des variables de nos observations
-colnames(donnees_na)<-c("CLEOBS","NOMCITE","LON","LAT","DATEDEBUT")
+colnames(donnees_na)<-c("CLEOBS","ESP","LON","LAT","DATEDEBUT")
 #format numérique pour les données de latitudes et de longitudes
 donnees_na$LON<-as.numeric(as.character(donnees_na$LON))
 donnees_na$LAT<-as.numeric(as.character(donnees_na$LAT))
@@ -107,13 +107,13 @@ max(donnees_na$LAT)
 min(donnees_na$LON)
 min(donnees_na$LAT)
 ```
-On garde seulement lon lat et une variable qui définit notre observation; ici NOMCITE donne l'espèce
+On garde seulement lon lat et une variable qui définit notre observation; ici ESP donne l'espèce
 
 ```{r message=FALSE, warning=FALSE, results = 'hide'}
 #création d'un data frame pour faire la carte
-donnees_df<- data.frame(donnees_na$LON, donnees_na$LAT, donnees_na$NOMCITE)
+donnees_df<- data.frame(donnees_na$LON, donnees_na$LAT, donnees_na$ESP)
 head(donnees_df)
-colnames(donnees_df) <- c("LON", "LAT", "NOMCITE")
+colnames(donnees_df) <- c("LON", "LAT", "ESP")
 ```
 
 ### Construire la map
@@ -138,7 +138,7 @@ plot(map, image = TRUE, land = TRUE, lwd = 0.03,
                  c(min(map), 0, blues)))
 
 #créer un objet facteur espèce
-especes<-factor(donnees_df$NOMCITE)
+especes<-factor(donnees_df$ESP)
 summary(especes)
 #un objet couleur avec le nombre de couleur correspondant au nombre d'espèce
 couleurs<-c("hotpink2",  "aquamarine4")

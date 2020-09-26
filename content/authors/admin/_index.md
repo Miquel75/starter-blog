@@ -64,7 +64,7 @@ social:
 ---
  <span style="color:#5f96d7"><b>Je comprends R<b/></span>
 
-Ce blog me permet de structurer mes connaissances et de transmettre ce que j'apprends. Il prend source dans mes différentes expérience avec ce logiciel de programmation et avec les biostatistiques. Ce sont des outils essentiels à pour de nombreux projet, notamment la recherche en écologie.
+Ce blog me permet de structurer mes connaissances et de transmettre ce que j'apprends. Il prend source dans mes différentes expérience avec ce logiciel de programmation et avec les biostatistiques. Ce sont des outils essentiels à de nombreux projet, notamment la recherche en écologie.
   
 S'il donne un jour un coup de pouce à quelqu'un dans le cadre d'un projet d'écologie ou de conservation du vivant, ce blog aura atteint tous ses objectifs. 
   

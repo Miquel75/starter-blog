@@ -43,7 +43,7 @@ projects: []
 
 
 <p>Pour reproduire le script, télécharger les données :<br />
-- <a href="/files/poissons.csv">poissons.csv</a></p>
+- <a href="/files/donnees.csv">donnees.csv</a></p>
 <div id="preparer-lenvrionnement-et-les-données" class="section level3">
 <h3>Preparer l’envrionnement et les données</h3>
 <p>Installer le package marmap si ce n’est pas déjà fait</p>
@@ -52,23 +52,23 @@ projects: []
 <pre class="r"><code>library(marmap)
 library(dplyr)
 library(tidyr)</code></pre>
-<p>Importer les données (à télécharger ici <a href="/files/poissons.csv">poissons.csv</a> ) et les manipuler pour avoir le tableau qui nous intéresse.</p>
+<p>Importer les données (à télécharger ici <a href="/files/donnees.csv">donnees.csv</a> ) et les manipuler pour avoir le tableau qui nous intéresse.</p>
 <pre class="r"><code>#on importe les données
 donnees&lt;-read.csv2(&#39;donnees.csv&#39;,header=TRUE,sep=&#39;;&#39;)
 
 #Selectionner les données utiles pour faire les cartes
 names(donnees)
 donnees_filt&lt;-donnees %&gt;%
- dplyr::select(1,CLEOBS, NOMCITE, X, Y, DATEDEBUT) 
+ dplyr::select(1,CLEOBS, ESP, X, Y, DATEDEBUT) 
 
 #visualiser les données manquantes, le nombre de NA
 sapply(donnees_filt,function(x) sum(is.na(x)))
 
 #supprimer les lignes avec valeurs manquantes, fonction drop_na du package &#39;tidyr&#39;
-donnees_na &lt;- donnees_filt %&gt;% drop_na(X,Y, NOMCITE)</code></pre>
+donnees_na &lt;- donnees_filt %&gt;% drop_na(X,Y, ESP)</code></pre>
 <p>Renommer et mettre lat et lon en format numérique.</p>
 <pre class="r"><code>#renommer si nécessaire le nom des variables de nos observations
-colnames(donnees_na)&lt;-c(&quot;CLEOBS&quot;,&quot;NOMCITE&quot;,&quot;LON&quot;,&quot;LAT&quot;,&quot;DATEDEBUT&quot;)
+colnames(donnees_na)&lt;-c(&quot;CLEOBS&quot;,&quot;ESP&quot;,&quot;LON&quot;,&quot;LAT&quot;,&quot;DATEDEBUT&quot;)
 #format numérique pour les données de latitudes et de longitudes
 donnees_na$LON&lt;-as.numeric(as.character(donnees_na$LON))
 donnees_na$LAT&lt;-as.numeric(as.character(donnees_na$LAT))</code></pre>
@@ -78,11 +78,11 @@ max(donnees_na$LON)
 max(donnees_na$LAT)
 min(donnees_na$LON)
 min(donnees_na$LAT)</code></pre>
-<p>On garde seulement lon lat et une variable qui définit notre observation; ici NOMCITE donne l’espèce</p>
+<p>On garde seulement lon lat et une variable qui définit notre observation; ici ESP donne l’espèce</p>
 <pre class="r"><code>#création d&#39;un data frame pour faire la carte
-donnees_df&lt;- data.frame(donnees_na$LON, donnees_na$LAT, donnees_na$NOMCITE)
+donnees_df&lt;- data.frame(donnees_na$LON, donnees_na$LAT, donnees_na$ESP)
 head(donnees_df)
-colnames(donnees_df) &lt;- c(&quot;LON&quot;, &quot;LAT&quot;, &quot;NOMCITE&quot;)</code></pre>
+colnames(donnees_df) &lt;- c(&quot;LON&quot;, &quot;LAT&quot;, &quot;ESP&quot;)</code></pre>
 </div>
 <div id="construire-la-map" class="section level3">
 <h3>Construire la map</h3>
@@ -103,7 +103,7 @@ plot(map, image = TRUE, land = TRUE, lwd = 0.03,
                  c(min(map), 0, blues)))
 
 #créer un objet facteur espèce
-especes&lt;-factor(donnees_df$NOMCITE)
+especes&lt;-factor(donnees_df$ESP)
 summary(especes)
 #un objet couleur avec le nombre de couleur correspondant au nombre d&#39;espèce
 couleurs&lt;-c(&quot;hotpink2&quot;,  &quot;aquamarine4&quot;)

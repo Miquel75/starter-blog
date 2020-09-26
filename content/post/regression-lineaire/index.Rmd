@@ -1,0 +1,151 @@
+---
+title: 'Régression linéaire'
+subtitle: 'Lier deux variables entre elles'
+summary: Une regression linéaire, à quoi ça sert ?  
+authors:
+- Miquel Pons
+
+tags:
+- R
+- bases
+- régression linéaire
+- corrélation
+- lm
+- cor
+
+categories:
+- R
+- Statistiques
+- Premiers pas
+- Modèles
+
+date: Sys.Date()
+lastmod: "2020-09-26T00:00:00Z"
+featured: false
+draft: false
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Placement options: 1 = Full column width, 2 = Out-set, 3 = Screen-width
+# Focal point options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
+image:
+  placement: 1
+#  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/CpkOjOcXdUY)'
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+
+
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_knit$set(root.dir = normalizePath("C:/Users/Miquel Pons/Documents/starter-blog/static/files"))
+
+knitr::kable
+table <- function(data) { knitr::kable(data) }
+
+```
+
+
+
+
+## Qu'est ce qu'une régression linéaire ?
+C'est un modèle (une équation) qui cherche à relier de façon linéaire une variable, dite expliquée, à une ou plusieurs autres variables, dites explicatives. 
+
+L'exemple le plus simple avec une seule variable explicative c'est :  
+  ` y = a.x + b + e  `
+y est la variable expliquée (indépendante)
+x est la variable explicative (dépendante)
+b est le coefficient de la régression  
+e est l'erreur  
+
+## A quoi ça sert ?
+Comprendre la relation entre la variable expliquée et la (ou les) variables explicatives.  
+Prédire à partir de la variable explicative (prédictive dans ce cas là) quelle sera la valeur possible de la variable expliquée.  
+
+
+## En pratique ça donne quoi ?
+Il ne faut pas oublier la question que l'on se pose : Dans une regression l'hypothèse nulle H0 est que la variable explicative ne permet pas d'expliquer la variable explicative.
+
+Importer les données (à télécharger ici <a href="/files/donnees.csv">donnees.csv</a> ) et les manipuler pour avoir le tableau qui nous intéresse. 
+
+```{r}
+library(dplyr)
+library(tidyr)
+
+```
+
+```{r message=FALSE, warning=FALSE, results = 'hide'}
+#on importe les données
+donnees<-read.csv2('donnees.csv',header=TRUE,sep=';')
+
+#Selectionner la variable expliquée et la (ou les) variables explicatives
+names(donnees)
+donnees_filt<-donnees %>%
+ dplyr::select(TAILLE, PROF) 
+
+#visualiser les données manquantes, le nombre de NA
+sapply(donnees_filt,function(x) sum(is.na(x)))
+
+#supprimer les lignes avec valeurs manquantes, fonction drop_na du package 'tidyr'
+donnees_na <- donnees_filt %>% drop_na(TAILLE, PROF)
+
+```
+
+On regarde un peu ce qu'on a.
+
+```{r}
+summary(donnees_na)
+
+```
+
+La profondeur en class character peut être source de problème. On le veut en numérique. 
+
+```{r}
+donnees_na$PROF<-as.numeric(donnees_na$PROF)
+donnees_na$TAILLE<-as.numeric(donnees_na$TAILLE)
+
+summary(donnees_na)
+```
+```{r}
+#régression linéaire avec fonction lm (?lm pour l'aide R)
+mod<-lm(PROF~TAILLE, donnees_na)
+#visualiser les données
+plot(donnees_na$PROF, donnees_na$TAILLE)
+abline(mod)
+title("Régression linéaire")
+summary(mod)
+```
+**Call** -> indique la formule utilisée.  
+**Residuals** -> indique la différence entre la valeur observée et la valeur prédite par le modèle.   
+**Coefficient** -> donne la valeur de la pente : 
+La pente correspond à l'évolution de la taille en fonction de la profondeur. Ici, pour 1 mètre de profondeur supplémentaire, la taille des poissons augmentera de 0.57969cm. Intercept est la valeur du reste    
+            -> Std. Error la précision de l'estimation.  
+            -> t value le coefficient (pente) / par Std. Error, test si le coeff est significativement différent de zéro.  
+            -> Pr(>|t|) le niveau de signification  
+**Residual Standard Error** -> déviation standard résiduel, c'est mieux quand ce chiffre est petit.  
+**Multiple R-squared** -> R² est la proportion de variance expliquée par le modèle. Adjusted R-squared est plus précis dans le cas d'une régression multiple. La racine carré de R² donne le coefficient de corrélation. 
+**F-statistic** -> vérifie si le poids d'une variable est significativement différent de zéro. Si la p-value est suppérieur à 0.05, le modèle ne fait rien d'intéressant.   
+
+Le calcul du **coefficient de corrélation** peut aussi se faire avec la fonction  `cor`
+
+```{r}
+cor(donnees_na$TAILLE, donnees_na$PROF)
+```
+On voit que le coefficient de corrélation entre la profondeur et la taille des poissons de notre échantillon est de 0.7866876.  
+  
+Si R = 0, il n'y a pas de relation linéaire entre les variables, si R = 1 la relation linéaire est parfaite, tous les points sont sur la droite.
+
+
+
