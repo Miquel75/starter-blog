@@ -102,13 +102,47 @@ summary(donnees_na)</code></pre>
 ##  Mean   :16.73   Mean   :17.11  
 ##  3rd Qu.:24.00   3rd Qu.:21.25  
 ##  Max.   :41.00   Max.   :40.00</code></pre>
+<p>On fait notre régression linéaire entre la profondeur et la taille des poissons de notre échantillon et on visualise le résultat.</p>
 <pre class="r"><code>#régression linéaire avec fonction lm (?lm pour l&#39;aide R)
 mod&lt;-lm(PROF~TAILLE, donnees_na)
 #visualiser les données
-plot(donnees_na$PROF, donnees_na$TAILLE)
+plot(donnees_na$TAILLE, donnees_na$PROF)
 abline(mod)
+title(&quot;Régression linéaire&quot;)
+summary(mod)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = PROF ~ TAILLE, data = donnees_na)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -9.6762 -2.9739 -0.3872  2.1858 14.0409 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  7.40910    1.85514   3.994 0.000535 ***
+## TAILLE       0.57969    0.09286   6.243 1.88e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.17 on 24 degrees of freedom
+## Multiple R-squared:  0.6189, Adjusted R-squared:  0.603 
+## F-statistic: 38.97 on 1 and 24 DF,  p-value: 1.882e-06</code></pre>
+<pre class="r"><code>#visualiser la distance des points par rapport au modèle
+segments(donnees_na$TAILLE,fitted(mod),donnees_na$TAILLE, donnees_na$PROF)
+#frame valeurs taille
+pred.frame&lt;-data.frame(TAILLE= 1.50:41)
+#predict permet des predictions d&#39;après les résultats du modèle
+pc&lt;-predict(mod, interval=&quot;confidence&quot;, newdata=pred.frame)
+pp&lt;-predict(mod, interval=&quot;prediction&quot;, newdata=pred.frame)
+#valeur des intervalles de confiance haut et bas [,2:3]. lty le type de ligne tracés
+matlines(pred.frame, pc[,2:3], lty=c(2,2), col=&quot;blue&quot;)
+matlines(pred.frame, pp[,2:3], lty=c(3,3), col=&quot;red&quot;)
+#légende des matlines
+legend(&quot;topleft&quot;,c(&quot;confiance&quot;,&quot;prediction&quot;),lty=c(2,3), col=c(&quot;blue&quot;,&quot;red&quot;))
 title(&quot;Régression linéaire&quot;)</code></pre>
 <p><img src="/post/regression-lineaire/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Regardons les résultats de la régression de plus près.</p>
 <pre class="r"><code>summary(mod)</code></pre>
 <pre><code>## 
 ## Call:
@@ -131,16 +165,17 @@ title(&quot;Régression linéaire&quot;)</code></pre>
 <p><strong>Call</strong> -&gt; indique la formule utilisée.<br />
 <strong>Residuals</strong> -&gt; indique la différence entre la valeur observée et la valeur prédite par le modèle.<br />
 <strong>Coefficient</strong> -&gt; donne la valeur de la pente :
-La pente correspond à l’évolution de la taille en fonction de la profondeur. Ici, pour 1 mètre de profondeur supplémentaire, la taille des poissons augmentera de 0.57969cm. Intercept est la valeur du reste<br />
+La pente correspond à l’évolution de la taille en fonction de la profondeur. Ici, pour 1 mètre de profondeur supplémentaire, la taille des poissons augmentera de 0.57969cm. Intercept est la valeur du reste.<br />
 -&gt; Std. Error la précision de l’estimation.<br />
 -&gt; t value le coefficient (pente) / par Std. Error, test si le coeff est significativement différent de zéro.<br />
 -&gt; Pr(&gt;|t|) le niveau de signification<br />
 <strong>Residual Standard Error</strong> -&gt; déviation standard résiduel, c’est mieux quand ce chiffre est petit.<br />
-<strong>Multiple R-squared</strong> -&gt; R² est la proportion de variance expliquée par le modèle. Adjusted R-squared est plus précis dans le cas d’une régression multiple. La racine carré de R² donne le coefficient de corrélation.<br />
-<strong>F-statistic</strong> -&gt; vérifie si le poids d’une variable est significativement différent de zéro. Si la p-value est suppérieur à 0.05, le modèle ne fait rien d’intéressant.</p>
+<strong>Multiple R-squared</strong> -&gt; R² est la proportion de variance expliquée par le modèle. <em>Plus R² est proche de 1, plus la variabilité des données est expliqué par le modèle.</em> Adjusted R-squared est plus précis dans le cas d’une régression multiple. La racine carré de R² donne le coefficient de corrélation.<br />
+<strong>F-statistic</strong> -&gt; vérifie si le poids d’une variable est significativement différent de zéro. Si la p-value est suppérieur à 0.05, le modèle ne fait rien d’intéressant. Ici ce n’est pas le cas, la variable explicative de la profondeur semble affecter la taille des poissons.</p>
 <p>Le calcul du <strong>coefficient de corrélation</strong> peut aussi se faire avec la fonction <code>cor</code></p>
 <pre class="r"><code>cor(donnees_na$TAILLE, donnees_na$PROF)</code></pre>
 <pre><code>## [1] 0.7866876</code></pre>
 <p>On voit que le coefficient de corrélation entre la profondeur et la taille des poissons de notre échantillon est de 0.7866876.</p>
 <p>Si R = 0, il n’y a pas de relation linéaire entre les variables, si R = 1 la relation linéaire est parfaite, tous les points sont sur la droite.</p>
+<p>Les variables PROF et TAILLE semblent reliées étant donné la correlation entre ces variables, le coefficient de la pente et la p-value. Etant donné le R² la profondeur a un fort impact sur la taille mais il reste cependant une partie inexpliquée.</p>
 </div>

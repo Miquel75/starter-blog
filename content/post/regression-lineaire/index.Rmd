@@ -115,25 +115,48 @@ donnees_na$TAILLE<-as.numeric(donnees_na$TAILLE)
 
 summary(donnees_na)
 ```
+
+
+On fait notre régression linéaire entre la profondeur et la taille des poissons de notre échantillon et on visualise le résultat. 
+
 ```{r}
 #régression linéaire avec fonction lm (?lm pour l'aide R)
 mod<-lm(PROF~TAILLE, donnees_na)
 #visualiser les données
-plot(donnees_na$PROF, donnees_na$TAILLE)
+plot(donnees_na$TAILLE, donnees_na$PROF)
 abline(mod)
 title("Régression linéaire")
+summary(mod)
+#visualiser la distance des points par rapport au modèle
+segments(donnees_na$TAILLE,fitted(mod),donnees_na$TAILLE, donnees_na$PROF)
+#frame valeurs taille
+pred.frame<-data.frame(TAILLE= 1.50:41)
+#predict permet des predictions d'après les résultats du modèle
+pc<-predict(mod, interval="confidence", newdata=pred.frame)
+pp<-predict(mod, interval="prediction", newdata=pred.frame)
+#valeur des intervalles de confiance haut et bas [,2:3]. lty le type de ligne tracés
+matlines(pred.frame, pc[,2:3], lty=c(2,2), col="blue")
+matlines(pred.frame, pp[,2:3], lty=c(3,3), col="red")
+#légende des matlines
+legend("topleft",c("confiance","prediction"),lty=c(2,3), col=c("blue","red"))
+title("Régression linéaire")
+```
+
+Regardons les résultats de la régression de plus près.
+
+```{r}
 summary(mod)
 ```
 **Call** -> indique la formule utilisée.  
 **Residuals** -> indique la différence entre la valeur observée et la valeur prédite par le modèle.   
 **Coefficient** -> donne la valeur de la pente : 
-La pente correspond à l'évolution de la taille en fonction de la profondeur. Ici, pour 1 mètre de profondeur supplémentaire, la taille des poissons augmentera de 0.57969cm. Intercept est la valeur du reste    
+La pente correspond à l'évolution de la taille en fonction de la profondeur. Ici, pour 1 mètre de profondeur supplémentaire, la taille des poissons augmentera de 0.57969cm. Intercept est la valeur du reste.    
             -> Std. Error la précision de l'estimation.  
             -> t value le coefficient (pente) / par Std. Error, test si le coeff est significativement différent de zéro.  
             -> Pr(>|t|) le niveau de signification  
 **Residual Standard Error** -> déviation standard résiduel, c'est mieux quand ce chiffre est petit.  
-**Multiple R-squared** -> R² est la proportion de variance expliquée par le modèle. Adjusted R-squared est plus précis dans le cas d'une régression multiple. La racine carré de R² donne le coefficient de corrélation.    
-**F-statistic** -> vérifie si le poids d'une variable est significativement différent de zéro. Si la p-value est suppérieur à 0.05, le modèle ne fait rien d'intéressant.   
+**Multiple R-squared** -> R² est la proportion de variance expliquée par le modèle. *Plus R² est proche de 1, plus la variabilité des données est expliqué par le modèle.*  Adjusted R-squared est plus précis dans le cas d'une régression multiple. La racine carré de R² donne le coefficient de corrélation.    
+**F-statistic** -> vérifie si le poids d'une variable est significativement différent de zéro. Si la p-value est suppérieur à 0.05, le modèle ne fait rien d'intéressant. Ici ce n'est pas le cas, la variable explicative de la profondeur semble affecter la taille des poissons.    
 
 Le calcul du **coefficient de corrélation** peut aussi se faire avec la fonction  `cor`
 
@@ -143,6 +166,6 @@ cor(donnees_na$TAILLE, donnees_na$PROF)
 On voit que le coefficient de corrélation entre la profondeur et la taille des poissons de notre échantillon est de 0.7866876.  
   
 Si R = 0, il n'y a pas de relation linéaire entre les variables, si R = 1 la relation linéaire est parfaite, tous les points sont sur la droite.
-
-
-
+  
+  
+Les variables PROF et TAILLE semblent reliées étant donné la correlation entre ces variables, le coefficient de la pente et la p-value. Etant donné le R² la profondeur a un fort impact sur la taille mais il reste cependant une partie inexpliquée. 
