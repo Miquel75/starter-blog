@@ -50,10 +50,10 @@ projects: []
 <h2>Qu’est ce qu’une régression linéaire ?</h2>
 <p>C’est un modèle (une équation) qui cherche à relier de façon linéaire une variable, dite expliquée, à une ou plusieurs autres variables, dites explicatives.</p>
 <p>L’exemple le plus simple avec une seule variable explicative c’est :<br />
-<code>y = a.x + b + e</code>
-y est la variable expliquée (indépendante)
-x est la variable explicative (dépendante)
-b est le coefficient de la régression<br />
+<code>y = a.x + b + e</code> <br/>
+y est la variable expliquée (indépendante) <br/>
+x est la variable explicative (dépendante) <br/>
+b est le coefficient de la régression <br/>
 e est l’erreur</p>
 </div>
 <div id="a-quoi-ça-sert" class="section level2">
@@ -65,26 +65,22 @@ Prédire à partir de la variable explicative (prédictive dans ce cas là) quel
 <h2>En pratique ça donne quoi ?</h2>
 <p>Il ne faut pas oublier la question que l’on se pose : Dans une regression l’hypothèse nulle H0 est que la variable explicative ne permet pas d’expliquer la variable explicative.</p>
 <p>Importer les données (à télécharger ici <a href="/files/donnees.csv">donnees.csv</a> ) et les manipuler pour avoir le tableau qui nous intéresse.</p>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attachement du package : &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
+<pre class="r"><code>library(dplyr)
+library(tidyr)</code></pre>
 <pre class="r"><code>#on importe les données
 donnees&lt;-read.csv2(&#39;donnees.csv&#39;,header=TRUE,sep=&#39;;&#39;)
 
 #Selectionner la variable expliquée et la (ou les) variables explicatives
-names(donnees)
-donnees_filt&lt;-donnees %&gt;%
+names(donnees)</code></pre>
+<pre><code>##  [1] &quot;CLEOBS&quot;                       &quot;OT&quot;                          
+##  [3] &quot;TAILLE&quot;                       &quot;PROF&quot;                        
+##  [5] &quot;ESP&quot;                          &quot;DATEDEBUT&quot;                   
+##  [7] &quot;DATEFIN&quot;                      &quot;DATEDETERMINATIONOBS&quot;        
+##  [9] &quot;X&quot;                            &quot;Y&quot;                           
+## [11] &quot;PRECISION&quot;                    &quot;ORGANISMEOBSERVATEUR&quot;        
+## [13] &quot;ORGANISMEGESTIONNAIREDONNEES&quot;</code></pre>
+<pre class="r"><code>donnees_filt&lt;-donnees %&gt;%
  dplyr::select(TAILLE, PROF) 
-
-#visualiser les données manquantes, le nombre de NA
-sapply(donnees_filt,function(x) sum(is.na(x)))
 
 #supprimer les lignes avec valeurs manquantes, fonction drop_na du package &#39;tidyr&#39;
 donnees_na &lt;- donnees_filt %&gt;% drop_na(TAILLE, PROF)</code></pre>
@@ -140,7 +136,7 @@ La pente correspond à l’évolution de la taille en fonction de la profondeur.
 -&gt; t value le coefficient (pente) / par Std. Error, test si le coeff est significativement différent de zéro.<br />
 -&gt; Pr(&gt;|t|) le niveau de signification<br />
 <strong>Residual Standard Error</strong> -&gt; déviation standard résiduel, c’est mieux quand ce chiffre est petit.<br />
-<strong>Multiple R-squared</strong> -&gt; R² est la proportion de variance expliquée par le modèle. Adjusted R-squared est plus précis dans le cas d’une régression multiple. La racine carré de R² donne le coefficient de corrélation.
+<strong>Multiple R-squared</strong> -&gt; R² est la proportion de variance expliquée par le modèle. Adjusted R-squared est plus précis dans le cas d’une régression multiple. La racine carré de R² donne le coefficient de corrélation.<br />
 <strong>F-statistic</strong> -&gt; vérifie si le poids d’une variable est significativement différent de zéro. Si la p-value est suppérieur à 0.05, le modèle ne fait rien d’intéressant.</p>
 <p>Le calcul du <strong>coefficient de corrélation</strong> peut aussi se faire avec la fonction <code>cor</code></p>
 <pre class="r"><code>cor(donnees_na$TAILLE, donnees_na$PROF)</code></pre>

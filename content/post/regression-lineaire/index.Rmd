@@ -64,11 +64,11 @@ table <- function(data) { knitr::kable(data) }
 C'est un modèle (une équation) qui cherche à relier de façon linéaire une variable, dite expliquée, à une ou plusieurs autres variables, dites explicatives. 
 
 L'exemple le plus simple avec une seule variable explicative c'est :  
-  ` y = a.x + b + e  `
-y est la variable expliquée (indépendante)
-x est la variable explicative (dépendante)
-b est le coefficient de la régression  
-e est l'erreur  
+  ` y = a.x + b + e  `  <br/>
+y est la variable expliquée (indépendante)    <br/>
+x est la variable explicative (dépendante)    <br/>
+b est le coefficient de la régression      <br/>
+e est l'erreur    
 
 ## A quoi ça sert ?
 Comprendre la relation entre la variable expliquée et la (ou les) variables explicatives.  
@@ -80,13 +80,13 @@ Il ne faut pas oublier la question que l'on se pose : Dans une regression l'hypo
 
 Importer les données (à télécharger ici <a href="/files/donnees.csv">donnees.csv</a> ) et les manipuler pour avoir le tableau qui nous intéresse. 
 
-```{r}
+```{r, message=FALSE, warning=FALSE, results = 'hide'}
 library(dplyr)
 library(tidyr)
 
 ```
 
-```{r message=FALSE, warning=FALSE, results = 'hide'}
+```{r message=FALSE, warning=FALSE}
 #on importe les données
 donnees<-read.csv2('donnees.csv',header=TRUE,sep=';')
 
@@ -94,9 +94,6 @@ donnees<-read.csv2('donnees.csv',header=TRUE,sep=';')
 names(donnees)
 donnees_filt<-donnees %>%
  dplyr::select(TAILLE, PROF) 
-
-#visualiser les données manquantes, le nombre de NA
-sapply(donnees_filt,function(x) sum(is.na(x)))
 
 #supprimer les lignes avec valeurs manquantes, fonction drop_na du package 'tidyr'
 donnees_na <- donnees_filt %>% drop_na(TAILLE, PROF)
@@ -135,7 +132,7 @@ La pente correspond à l'évolution de la taille en fonction de la profondeur. I
             -> t value le coefficient (pente) / par Std. Error, test si le coeff est significativement différent de zéro.  
             -> Pr(>|t|) le niveau de signification  
 **Residual Standard Error** -> déviation standard résiduel, c'est mieux quand ce chiffre est petit.  
-**Multiple R-squared** -> R² est la proportion de variance expliquée par le modèle. Adjusted R-squared est plus précis dans le cas d'une régression multiple. La racine carré de R² donne le coefficient de corrélation. 
+**Multiple R-squared** -> R² est la proportion de variance expliquée par le modèle. Adjusted R-squared est plus précis dans le cas d'une régression multiple. La racine carré de R² donne le coefficient de corrélation.    
 **F-statistic** -> vérifie si le poids d'une variable est significativement différent de zéro. Si la p-value est suppérieur à 0.05, le modèle ne fait rien d'intéressant.   
 
 Le calcul du **coefficient de corrélation** peut aussi se faire avec la fonction  `cor`
