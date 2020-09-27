@@ -129,7 +129,6 @@ mod<-lm(TAILLE~PROF, donnees_na)
 plot(donnees_na$PROF, donnees_na$TAILLE)
 abline(mod)
 title("Régression linéaire")
-summary(mod)
 #visualiser les résidus, étant la distance des points par rapport au modèle
 segments(donnees_na$PROF,fitted(mod),donnees_na$PROF, donnees_na$TAILLE)
 #frame valeurs taille
