@@ -235,8 +235,8 @@ La P-value est supérieur à 0.05. On ne peut pas rejeter l'hypothèse nulle, de
 
 **Linéarité**  
 
-Les variables ont une relation linéaire. Lorsque la normalité et l'homoscédasticité sont attestés, il n'y a pas a s'inquiété pour ça.
+Les variables ont une relation linéaire. Lorsque la normalité et l'homoscédasticité sont vérifiées, il n'y a pas a s'inquiéter pour ça.
 
 **Multicollinearité**  
 
-C'est lorsque des variables explicatives sont très corrélés les unes aux autres, cela peut fausser les résultats. Il faut donc vérifier les coefficients de corrélation, voir si certaines dépassent 0.80, et vérifier le VIF. Nul besoin de s'en inquiéter ici nous n'avons qu'une seule variable explicative (indépendante).
+Lorsque des variables explicatives sont très corrélés les unes aux autres, ça peut fausser les résultats. Il faut donc vérifier les coefficients de corrélation, voir si certaines dépassent 0.80 ou plus, et vérifier le VIF. Nul besoin de s'en inquiéter ici nous n'avons qu'une seule variable explicative (indépendante).
