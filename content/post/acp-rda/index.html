@@ -36,15 +36,9 @@ authors:
 <p>Elle s’applique sur des jeux de données comportant n individus et p variables.</p>
 <p>Des packages seront nécéssaire pour l’ACP</p>
 <pre class="r"><code>library(FactoMineR)
-library(factoextra)</code></pre>
-<pre><code>## Le chargement a nécessité le package : ggplot2</code></pre>
-<pre><code>## Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
-<pre class="r"><code>library(vegan)</code></pre>
-<pre><code>## Le chargement a nécessité le package : permute</code></pre>
-<pre><code>## Le chargement a nécessité le package : lattice</code></pre>
-<pre><code>## This is vegan 2.5-6</code></pre>
-<pre class="r"><code>library(corrplot)</code></pre>
-<pre><code>## corrplot 0.84 loaded</code></pre>
+library(factoextra)
+library(vegan)
+library(corrplot)</code></pre>
 <p>On importe les données dans R. Le tableau spe décrit sur quel site les espèces sont distribuées. Le tableau env décrit les sites. On importe les tableaux d’espèces ( <a href="/files/spiders_spe.txt">spiders_spe.txt</a> ) et de données environnementales ( <a href="/files/spiders_env.txt">spiders_env.txt</a> ).</p>
 <pre class="r"><code>spe &lt;- read.table(&quot;spiders_spe.txt&quot;) 
 env &lt;- read.table(&quot;spiders_env.txt&quot;)</code></pre>
@@ -65,7 +59,7 @@ DCA</code></pre>
 ## Decorana values 0.6444 0.2886 0.08221 0.06241
 ## Axis lengths    2.7379 2.2460 1.55466 1.14527</code></pre>
 <p>Axis lengths étant inférieur à 3, ce test suggère que les données sont homogène, permettant des méthodes linéaires (ACP, RDA).
-Si Axis lenghts supérieur à 4, il faut effectuer faire d’autres tests (ACC) (ou transformer les données (Hellinger).</p>
+Si Axis lengths supérieur à 4, il faut effectuer faire d’autres tests (ACC) (ou transformer les données (Hellinger).</p>
 <p>On peut faire notre ACP avec la fonction PCA du package FactoMiner</p>
 <pre class="r"><code>ACP&lt;-PCA(all, quali.sup = 1:3)</code></pre>
 <p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
@@ -76,7 +70,7 @@ ACPh&lt;-PCA(allh) </code></pre>
 <p>La fonction fviz_screeplot permet de visualiser la contribution des axes a représenter la variance des données.</p>
 <pre class="r"><code>fviz_screeplot(ACPh, addlabels = TRUE, ylim = c(0, 50))</code></pre>
 <p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Presque 80% de l’information des données (la variance) est conservée par les 3 premières dimensions.</p>
+<p>Presque 80% de l’information des données (la variance) est accumulée dans les 3 premières dimensions.</p>
 <pre class="r"><code>ACPh$eig</code></pre>
 <pre><code>##         eigenvalue percentage of variance cumulative percentage of variance
 ## comp 1  7.66231223            47.88945141                          47.88945
@@ -165,8 +159,139 @@ tRDA</code></pre>
 ##    PC11    PC12 
 ## 0.00070 0.00058</code></pre>
 <pre class="r"><code>screeplot(tRDA,col=&quot;salmon&quot;)</code></pre>
-<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-<p>On visualise l’analye de redondance.</p>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+On peut regarder le détail de la RDA.</p>
+<pre class="r"><code>summary(tRDA)</code></pre>
+<pre><code>## 
+## Call:
+## rda(formula = spe2 ~ Sol_Sec + Reflectance + Calamagrostis +      Corynephorus, data = env) 
+## 
+## Partitioning of variance:
+##               Inertia Proportion
+## Total          0.4939      1.000
+## Constrained    0.3205      0.649
+## Unconstrained  0.1733      0.351
+## 
+## Eigenvalues, and their contribution to the variance 
+## 
+## Importance of components:
+##                         RDA1    RDA2    RDA3     RDA4     PC1     PC2     PC3
+## Eigenvalue            0.2201 0.06838 0.02639 0.005604 0.06804 0.04118 0.01817
+## Proportion Explained  0.4458 0.13846 0.05343 0.011347 0.13777 0.08339 0.03679
+## Cumulative Proportion 0.4458 0.58424 0.63767 0.649017 0.78678 0.87018 0.90696
+##                           PC4     PC5      PC6      PC7      PC8      PC9
+## Eigenvalue            0.01274 0.01002 0.007392 0.005165 0.004374 0.003453
+## Proportion Explained  0.02580 0.02029 0.014968 0.010458 0.008858 0.006993
+## Cumulative Proportion 0.93276 0.95306 0.968025 0.978483 0.987341 0.994334
+##                           PC10      PC11      PC12
+## Eigenvalue            0.001509 0.0007045 0.0005848
+## Proportion Explained  0.003055 0.0014266 0.0011841
+## Cumulative Proportion 0.997389 0.9988159 1.0000000
+## 
+## Accumulated constrained eigenvalues
+## Importance of components:
+##                         RDA1    RDA2    RDA3     RDA4
+## Eigenvalue            0.2201 0.06838 0.02639 0.005604
+## Proportion Explained  0.6869 0.21334 0.08232 0.017484
+## Cumulative Proportion 0.6869 0.90019 0.98252 1.000000
+## 
+## Scaling 2 for species and site scores
+## * Species are scaled proportional to eigenvalues
+## * Sites are unscaled: weighted dispersion equal on all dimensions
+## * General scaling constant of scores:  1.91091 
+## 
+## 
+## Species scores
+## 
+##            RDA1     RDA2     RDA3      RDA4       PC1      PC2
+## Spec.1  -0.5679  0.02655 -0.03538 -0.074365 -0.069743  0.20119
+## Spec.2   0.1317  0.07350  0.03380  0.013122  0.109158 -0.12320
+## Spec.3  -0.5066 -0.09245 -0.18353 -0.048251 -0.240766  0.28459
+## Spec.4   0.0594  0.05933 -0.01109  0.028116  0.025969  0.05396
+## Spec.5  -0.3457 -0.04818 -0.20706  0.106058 -0.239773  0.03589
+## Spec.6   0.1358  0.19394 -0.07608 -0.075482  0.064806  0.01973
+## Spec.7   0.3050 -0.33660  0.01377 -0.098195 -0.140246 -0.31593
+## Spec.8  -0.4102  0.15065  0.31100  0.005295  0.539924  0.07413
+## Spec.9   0.2474  0.29437 -0.08240 -0.060456  0.125843  0.10111
+## Spec.10  0.2332  0.44896 -0.07367  0.010935  0.196618  0.01589
+## Spec.11  0.6403 -0.15217 -0.01108  0.043036 -0.003685 -0.20936
+## Spec.12  0.3209 -0.01115 -0.03143 -0.019277  0.016066  0.06060
+## 
+## 
+## Site scores (weighted sums of species scores)
+## 
+##             RDA1     RDA2      RDA3      RDA4       PC1      PC2
+## Site1  -0.001942  0.53494  0.452684  0.089000  0.696861 -0.44380
+## Site2   0.343899  0.45461 -0.389148 -0.134725 -0.237465  0.03257
+## Site3   0.078248  0.50399  0.097195 -0.116507  0.591391 -0.24172
+## Site4   0.283602  0.58012 -0.274131 -0.040901 -0.111145 -0.31076
+## Site5   0.301560  0.60101 -0.397166 -0.165914 -0.213278  0.08901
+## Site6   0.298288  0.45154 -0.047423  0.386866  0.312061  0.81551
+## Site7   0.240252  0.62679 -0.079836  0.064336 -0.071950  0.24591
+## Site8   0.306349 -0.39108  0.085747 -1.152011  0.026471 -0.58452
+## Site9  -0.233027  0.38133  1.293857  0.466387  0.763641  0.03947
+## Site10 -0.436998  0.08647  1.200533  0.056982  0.578300  0.12711
+## Site11 -0.398093  0.22899  1.187077 -0.033233  0.438590 -0.02730
+## Site12 -0.240796  0.36013  1.154104  0.419530  0.054200 -0.49358
+## Site13  0.223417  0.55619 -0.071474 -0.038444 -0.062932  0.21430
+## Site14  0.308782  0.39970 -0.038370  0.426593  0.300155  0.35871
+## Site15  0.365508 -0.65118 -0.052872  0.320989 -0.288406 -0.05697
+## Site16  0.392625 -0.44120 -0.099893  0.144068 -0.101114 -0.15746
+## Site17  0.358635 -0.57186 -0.063020  0.751101 -0.264428  0.08153
+## Site18  0.333965 -0.61842  0.022490  0.601945 -0.206933 -0.31854
+## Site19  0.382283 -0.59183 -0.074044 -0.282326 -0.163542 -0.35069
+## Site20  0.357526 -0.68937  0.014870 -0.057686 -0.242401 -0.35240
+## Site21  0.318383 -0.52958  0.206696 -0.240126 -0.006086 -0.37694
+## Site22 -0.575654 -0.22786 -0.746852  0.003996 -0.071297  0.46899
+## Site23 -0.565824 -0.28823 -0.455241 -0.466132 -0.321939 -0.10249
+## Site24 -0.663136 -0.16142 -0.693798 -0.271035 -0.444650  0.42301
+## Site25 -0.109206 -0.00605  0.008509 -1.182610  0.410926  0.55015
+## Site26 -0.463262 -0.30761 -1.342435  1.686117 -0.433643 -0.44199
+## Site27 -0.643890 -0.13912 -0.675408 -0.670223 -0.504584  0.51496
+## Site28 -0.561494 -0.15098 -0.222649 -0.566037 -0.426802  0.29797
+## 
+## 
+## Site constraints (linear combinations of constraining variables)
+## 
+##             RDA1      RDA2     RDA3     RDA4       PC1      PC2
+## Site1  -0.193118  0.288906 -0.61361  0.13536  0.696861 -0.44380
+## Site2   0.357898  0.535008 -0.01193 -0.34469 -0.237465  0.03257
+## Site3  -0.099684  0.047743 -0.46680  0.17316  0.591391 -0.24172
+## Site4   0.163236  0.777114 -0.27124 -0.52163 -0.111145 -0.31076
+## Site5   0.320614  0.657469 -0.07582 -0.32589 -0.213278  0.08901
+## Site6   0.426983 -0.225332  0.17520  0.45587  0.312061  0.81551
+## Site7   0.377216  0.668747 -0.01873 -0.09963 -0.071950  0.24591
+## Site8   0.181709 -0.274202 -0.07221 -0.52458  0.026471 -0.58452
+## Site9  -0.196467 -0.073493  0.30466  0.02546  0.763641  0.03947
+## Site10 -0.320309 -0.055942  0.15896  0.06145  0.578300  0.12711
+## Site11 -0.378729  0.065720  0.50036  0.06651  0.438590 -0.02730
+## Site12 -0.488440  0.332219  1.18716  0.08561  0.054200 -0.49358
+## Site13  0.364319  0.641853 -0.05742  1.00855 -0.062932  0.21430
+## Site14  0.313455 -0.134953  0.04272 -0.04251  0.300155  0.35871
+## Site15  0.366183 -0.346223  0.12975  0.31051 -0.288406 -0.05697
+## Site16  0.285803 -0.366461  0.05076 -0.06390 -0.101114 -0.15746
+## Site17  0.385244 -0.338202  0.14690  0.43980 -0.264428  0.08153
+## Site18  0.301914 -0.354806  0.06285  0.10670 -0.206933 -0.31854
+## Site19  0.252786 -0.373040  0.01745 -0.19589 -0.163542 -0.35069
+## Site20  0.312532 -0.361135  0.07772  0.04294 -0.242401 -0.35240
+## Site21  0.268508 -0.369907  0.03331 -0.13304 -0.006086 -0.37694
+## Site22 -0.370230 -0.241851 -0.63594 -0.05607 -0.071297  0.46899
+## Site23 -0.560865  0.002335 -0.12843  0.14239 -0.321939 -0.10249
+## Site24 -0.492655 -0.005187 -0.04924  0.14953 -0.444650  0.42301
+## Site25 -0.009976 -0.376514 -0.26789 -0.77808  0.410926  0.55015
+## Site26 -0.664493 -0.088918 -0.67168  0.57115 -0.433643 -0.44199
+## Site27 -0.420935 -0.075992  0.05746 -0.34079 -0.504584  0.51496
+## Site28 -0.482499  0.045044  0.39569 -0.34829 -0.426802  0.29797
+## 
+## 
+## Biplot scores for constraining variables
+## 
+##                  RDA1   RDA2    RDA3     RDA4 PC1 PC2
+## Sol_Sec        0.9145 0.0701  0.1496  0.36924   0   0
+## Reflectance    0.3918 0.8828 -0.2464 -0.07985   0   0
+## Calamagrostis -0.9073 0.2132 -0.2353  0.27572   0   0
+## Corynephorus  -0.7485 0.1105  0.6537  0.01680   0   0</code></pre>
+<p>On visualise l’analyse de redondance.</p>
 <pre class="r"><code>#plot du RDA
 plot(tRDA,type=&quot;n&quot;) #création du plot
 text(tRDA,dis=&quot;cn&quot;, col=&quot;black&quot;) #mettre les fleches représentant les
@@ -174,8 +299,8 @@ text(tRDA,dis=&quot;cn&quot;, col=&quot;black&quot;) #mettre les fleches représ
 text(tRDA,&quot;species&quot;,col=&quot;chartreuse4&quot;, cex=0.8)#ajouter les espèces,
 text(tRDA, &quot;sites&quot;, col=&quot;salmon&quot;,cex=0.8)#ajouter les sites sur le graphe,
 title(main = &quot;Analyse de redondance (RDA)&quot;)</code></pre>
-<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-18-1.png" width="672" />
-La variable qui participe le plus à la formation de l’axe 1 est “Sol_Sec”, qui est négativement corrélée à Corynephorus et Calamagrostris. Les espèces 1, 3, 5, 8 se regroupe autour de ces deux variables. L’espèce 11 quand à elle a une affinité avec le sol sec. La qualité de représentation de la variable réflectance est très forte sur l’axe 2 (0.88).</p>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+La variable qui participe le plus à la formation de l’axe 1 est “Sol_Sec”, négativement corrélée à Corynephorus et Calamagrostris. Les espèces 1, 3, 5, 8 se regroupe autour de ces deux variables. L’espèce 11 quand à elle a une affinité avec le sol sec. La qualité de représentation de la variable réflectance est très forte sur l’axe 2 (0.88).</p>
 <p>On peut faire une ANOVA afin de voir si les résultats sont significatifs</p>
 <pre class="r"><code>anova(tRDA, by=&quot;margin&quot;)</code></pre>
 <pre><code>## Permutation test for rda under reduced model
@@ -185,10 +310,10 @@ La variable qui participe le plus à la formation de l’axe 1 est “Sol_Sec”
 ## 
 ## Model: rda(formula = spe2 ~ Sol_Sec + Reflectance + Calamagrostis + Corynephorus, data = env)
 ##               Df Variance      F Pr(&gt;F)    
-## Sol_Sec        1 0.018810 2.4959  0.060 .  
+## Sol_Sec        1 0.018810 2.4959  0.059 .  
 ## Reflectance    1 0.059552 7.9020  0.001 ***
-## Calamagrostis  1 0.028214 3.7438  0.013 *  
-## Corynephorus   1 0.036533 4.8476  0.004 ** 
+## Calamagrostis  1 0.028214 3.7438  0.012 *  
+## Corynephorus   1 0.036533 4.8476  0.002 ** 
 ## Residual      23 0.173334                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
