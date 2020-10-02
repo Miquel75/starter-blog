@@ -1,5 +1,5 @@
 ---
-title: "ACP et RDA"
+title: "Analyse en composantes principales (ACP) et Analyse de redondances (RDA)"
 categories:
 - R
 - Analyses multivariés
