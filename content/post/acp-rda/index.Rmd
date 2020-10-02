@@ -1,0 +1,191 @@
+---
+title: "ACP et RDA"
+categories:
+- R
+- Analyses multivariés
+date: "`r Sys.Date()`"
+draft: no
+featured: no
+image:
+  placement: 1
+  #caption: 'Image par Image par Gerd Altmann de Pixabay'
+  focal_point: ""
+  preview_only: false
+lastmod: '2020-10-02T00:00:00Z'
+projects: []
+subtitle: Comment visualiser la variance des données ?
+summary: Utiliser les analyses ACP et RDA pour expliquer la variances des données d'abondance d'espèces en fonction de paramètres environnementaux.
+tags:
+- R
+- ACP
+- RDA
+- PCA
+- screeplot
+- anova 
+authors: 
+- Miquel Pons
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_knit$set(root.dir = normalizePath("C:/Users/Miquel Pons/Documents/starter-blog/static/files"))
+
+
+```
+## Analyse en composantes principales ou **ACP**
+
+L'ACP ou analyse en composantes principales est une analyse statistique multivariés consistant à transformer des variables liées en variables décorrélées entre elles. Ces nouvelles variables sont projetés sur des axes principaux. On utilise ses axes pour expliquer la variance des données.  
+
+Lorsque les variables sont fortement corrélés, l'ACP permet d'indiquer la redondance des données, et donc de **réduire** le nombre de variables d'origines pour un plus petit nombre de variables (composantes principales) expliquant la majorité de la variance des données.   
+  
+L'ACP permet d'identifier les variables corrélées. 
+
+Elle s'applique sur des jeux de données comportant n individus et p variables.
+
+
+Des packages seront nécéssaire pour l'ACP
+```{r}
+library(FactoMineR)
+library(factoextra)
+library(vegan)
+library(corrplot)
+```
+
+
+On importe les données dans R. Le tableau spe décrit sur quel site les espèces sont distribuées. Le tableau env décrit les sites. On importe les tableaux d'espèces  ( <a href="/files/spiders_spe.txt">spiders_spe.txt</a> ) et de données environnementales ( <a href="/files/spiders_env.txt">spiders_env.txt</a> ).
+``` {r}
+
+spe <- read.table("spiders_spe.txt") 
+env <- read.table("spiders_env.txt")
+
+```
+
+On joint les deux tableaux.
+```{r}
+all<-cbind (env, spe)
+```
+
+Tester l'homogénéité des données avec un test DCA.
+
+```{r}
+DCA<-decorana(all)
+DCA
+```
+
+Axis lengths étant inférieur à 3, ce test suggère que les données sont homogène, permettant des méthodes linéaires (ACP, RDA). 
+Si Axis lenghts supérieur à 4, il faut effectuer faire d'autres tests (ACC) (ou transformer les données (Hellinger).
+
+On peut faire notre ACP avec la fonction PCA du package FactoMiner
+
+```{r}
+ACP<-PCA(all, quali.sup = 1:3)
+spe2<-decostand(spe, "hellinger") #transformation car beaucoup de 0 dans les données
+allh<-cbind(env, spe2)
+ACPh<-PCA(allh) 
+```
+
+La fonction fviz_screeplot permet de visualiser la contribution des axes a représenter la variance des données. 
+
+```{r}
+fviz_screeplot(ACPh, addlabels = TRUE, ylim = c(0, 50))
+```
+
+Presque 80% de l'information des données (la variance) est conservée par les 3 premières dimensions.
+
+
+```{r}
+ACPh$eig
+
+```
+
+Le critère de Kaiser conseille de conserver uniquement les valeurs propres supérieurs à 1, ce qui indique les 3 premières valeurs uniquement. 
+
+
+Quel est la contribution des variables aux différentes dimensions?
+```{r}
+ACPh$var$contrib
+```
+
+Pour visualiser la contribution on peut utiliser la fonction **corrplot**. 
+ 
+```{r}
+varh <- get_pca_var(ACPh) #get_pca_var permet d'extraire résultats de l'ACP (coordonnées, corrélation entre variables et les axes, cosinus-carré et contributions)
+corrplot(varh$contrib, is.corr=FALSE)
+```
+
+On peut visualiser notre ACP avec la fonction **fviz_pca_biplot**.
+
+```{r}
+#fonction fviz_pca pour une meilleure représentation de l'ACP
+fviz_pca_biplot(ACPh, axes = c(1, 2), geom = c("point", "text"), repel = T)
+
+```
+Les flèches représentant les especes indique le sens d'augmentation de l'abondance de chaque espèces.
+On peut voir quels sites, quels espèces se regroupent. 
+
+On refait la même ACP mais en ajoutant un gradient de couleur correspondant au cos2 de l'ACP. Le cos2 indique la qualité de réprésentation de la variable sur les deux composantes principale représentées par l'axe 1 et 2. Un cos2 sera parfaitement représenté sur ces deux axes. 
+
+```{r}
+fviz_pca_biplot(ACPh, axes = c(1, 2), geom = c("point", "text"), col.var="cos2", gradient.cols = c("pink","red","blue"), repel=T)
+```
+
+On peut refaire le même graph mais cette fois on remplace le gradient par "cos2" par un gradient par "contrib". 
+```{r}
+fviz_pca_biplot(ACPh, axes = c(1, 2), geom = c("point", "text"), col.var="contrib", gradient.cols = c("pink","red","blue"), repel=T)
+```
+
+
+
+
+On peut regarder comment sont projetés les données sur d'autres axes.
+```{r}
+fviz_pca_biplot(ACPh, axes = c(3, 4), geom = c("point", "text"), col.var="contrib", gradient.cols = c("pink","red","blue"), repel=T)
+
+```
+
+## Analyse de redondance ou **RDA**
+Lorsque les données sont sous cette forme il est en réalité plus pertinent de faire une analyse de redondance, ou ACP sous contrainte linéaire, qui est une analyse à deux tableaux. Un tableau d'abondance expliqué par un tableau de variables environnementales.
+
+Je reprends mes deux tableaux.
+```{r}
+env<-read.table("spiders_env.txt", sep="", dec=".", row.names = 1)
+spe<-read.table("spiders_spe.txt", sep="", dec=".", row.names = 1)
+```
+
+Transformation de hellinger adaptée aux tableaux d'abondances d'espèce ou il y a beaucoup de zéros.
+```{r}
+spe2<-decostand(spe, "hellinger") #transformation
+
+```
+On fait la RDA.
+
+```{r}
+tRDA<-rda(spe2~.,data=env)
+tRDA
+```
+```{r}
+screeplot(tRDA,col="salmon")
+```
+
+On visualise l'analye de redondance.
+
+```{r}
+#plot du RDA
+plot(tRDA,type="n") #création du plot
+text(tRDA,dis="cn", col="black") #mettre les fleches représentant les
+#variables, de couleur noir
+text(tRDA,"species",col="chartreuse4", cex=0.8)#ajouter les espèces,
+text(tRDA, "sites", col="salmon",cex=0.8)#ajouter les sites sur le graphe,
+title(main = "Analyse de redondance (RDA)")
+```
+La variable qui participe le plus à la formation de l’axe 1 est “Sol_Sec”, qui est négativement corrélée à Corynephorus et Calamagrostris. Les espèces 1, 3, 5, 8 se regroupe autour de ces deux variables. L’espèce 11 quand à elle a une affinité avec le sol sec. La qualité de représentation de la variable réflectance est très forte sur l’axe 2 (0.88).
+
+
+On peut faire une ANOVA afin de voir si les résultats sont significatifs
+
+```{r}
+anova(tRDA, by="margin")
+```
+C'est bien le cas étant donné la p-value inférieur à 0.05. 

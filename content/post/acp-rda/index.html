@@ -1,0 +1,196 @@
+---
+title: "ACP et RDA"
+categories:
+- R
+- Analyses multivariés
+date: "2020-10-02"
+draft: no
+featured: no
+image:
+  placement: 1
+  #caption: 'Image par Image par Gerd Altmann de Pixabay'
+  focal_point: ""
+  preview_only: false
+lastmod: '2020-10-02T00:00:00Z'
+projects: []
+subtitle: Comment visualiser la variance des données ?
+summary: Utiliser les analyses ACP et RDA pour expliquer la variances des données d'abondance d'espèces en fonction de paramètres environnementaux.
+tags:
+- R
+- ACP
+- RDA
+- PCA
+- screeplot
+- anova 
+authors: 
+- Miquel Pons
+---
+
+
+
+<div id="analyse-en-composantes-principales-ou-acp" class="section level2">
+<h2>Analyse en composantes principales ou <strong>ACP</strong></h2>
+<p>L’ACP ou analyse en composantes principales est une analyse statistique multivariés consistant à transformer des variables liées en variables décorrélées entre elles. Ces nouvelles variables sont projetés sur des axes principaux. On utilise ses axes pour expliquer la variance des données.</p>
+<p>Lorsque les variables sont fortement corrélés, l’ACP permet d’indiquer la redondance des données, et donc de <strong>réduire</strong> le nombre de variables d’origines pour un plus petit nombre de variables (composantes principales) expliquant la majorité de la variance des données.</p>
+<p>L’ACP permet d’identifier les variables corrélées.</p>
+<p>Elle s’applique sur des jeux de données comportant n individus et p variables.</p>
+<p>Des packages seront nécéssaire pour l’ACP</p>
+<pre class="r"><code>library(FactoMineR)
+library(factoextra)</code></pre>
+<pre><code>## Le chargement a nécessité le package : ggplot2</code></pre>
+<pre><code>## Welcome! Want to learn more? See two factoextra-related books at https://goo.gl/ve3WBa</code></pre>
+<pre class="r"><code>library(vegan)</code></pre>
+<pre><code>## Le chargement a nécessité le package : permute</code></pre>
+<pre><code>## Le chargement a nécessité le package : lattice</code></pre>
+<pre><code>## This is vegan 2.5-6</code></pre>
+<pre class="r"><code>library(corrplot)</code></pre>
+<pre><code>## corrplot 0.84 loaded</code></pre>
+<p>On importe les données dans R. Le tableau spe décrit sur quel site les espèces sont distribuées. Le tableau env décrit les sites. On importe les tableaux d’espèces ( <a href="/files/spiders_spe.txt">spiders_spe.txt</a> ) et de données environnementales ( <a href="/files/spiders_env.txt">spiders_env.txt</a> ).</p>
+<pre class="r"><code>spe &lt;- read.table(&quot;spiders_spe.txt&quot;) 
+env &lt;- read.table(&quot;spiders_env.txt&quot;)</code></pre>
+<p>On joint les deux tableaux.</p>
+<pre class="r"><code>all&lt;-cbind (env, spe)</code></pre>
+<p>Tester l’homogénéité des données avec un test DCA.</p>
+<pre class="r"><code>DCA&lt;-decorana(all)
+DCA</code></pre>
+<pre><code>## 
+## Call:
+## decorana(veg = all) 
+## 
+## Detrended correspondence analysis with 26 segments.
+## Rescaling of axes with 4 iterations.
+## 
+##                   DCA1   DCA2    DCA3    DCA4
+## Eigenvalues     0.6157 0.2560 0.14692 0.09535
+## Decorana values 0.6444 0.2886 0.08221 0.06241
+## Axis lengths    2.7379 2.2460 1.55466 1.14527</code></pre>
+<p>Axis lengths étant inférieur à 3, ce test suggère que les données sont homogène, permettant des méthodes linéaires (ACP, RDA).
+Si Axis lenghts supérieur à 4, il faut effectuer faire d’autres tests (ACC) (ou transformer les données (Hellinger).</p>
+<p>On peut faire notre ACP avec la fonction PCA du package FactoMiner</p>
+<pre class="r"><code>ACP&lt;-PCA(all, quali.sup = 1:3)</code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>spe2&lt;-decostand(spe, &quot;hellinger&quot;) #transformation car beaucoup de 0 dans les données
+allh&lt;-cbind(env, spe2)
+ACPh&lt;-PCA(allh) </code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-5-3.png" width="672" /><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-5-4.png" width="672" /></p>
+<p>La fonction fviz_screeplot permet de visualiser la contribution des axes a représenter la variance des données.</p>
+<pre class="r"><code>fviz_screeplot(ACPh, addlabels = TRUE, ylim = c(0, 50))</code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Presque 80% de l’information des données (la variance) est conservée par les 3 premières dimensions.</p>
+<pre class="r"><code>ACPh$eig</code></pre>
+<pre><code>##         eigenvalue percentage of variance cumulative percentage of variance
+## comp 1  7.66231223            47.88945141                          47.88945
+## comp 2  3.40482439            21.28015242                          69.16960
+## comp 3  1.67287262            10.45545387                          79.62506
+## comp 4  0.78158610             4.88491310                          84.50997
+## comp 5  0.58982114             3.68638214                          88.19635
+## comp 6  0.47689755             2.98060972                          91.17696
+## comp 7  0.27786148             1.73663425                          92.91360
+## comp 8  0.25620463             1.60127891                          94.51488
+## comp 9  0.24525147             1.53282169                          96.04770
+## comp 10 0.17704900             1.10655624                          97.15425
+## comp 11 0.16011596             1.00072477                          98.15498
+## comp 12 0.12564391             0.78527442                          98.94025
+## comp 13 0.07295126             0.45594539                          99.39620
+## comp 14 0.05831354             0.36445963                          99.76066
+## comp 15 0.02696935             0.16855841                          99.92922
+## comp 16 0.01132538             0.07078363                         100.00000</code></pre>
+<p>Le critère de Kaiser conseille de conserver uniquement les valeurs propres supérieurs à 1, ce qui indique les 3 premières valeurs uniquement.</p>
+<p>Quel est la contribution des variables aux différentes dimensions?</p>
+<pre class="r"><code>ACPh$var$contrib</code></pre>
+<pre><code>##                   Dim.1       Dim.2        Dim.3        Dim.4        Dim.5
+## Sol_Sec        9.853977  0.89782692  0.037765709  8.059404235  4.125925441
+## Reflectance    4.073538 13.08303003  2.638307791  5.455253872  2.360750233
+## Calamagrostis  8.526573  5.10999937  0.627681237  2.697588645  7.377404938
+## Corynephorus   6.521119  1.07290208 16.440639143  1.373979157  0.303422905
+## Spec.1        10.028702  2.54570151  0.331990240  0.018561432  1.344736482
+## Spec.2         4.760570  0.75401735 10.462137619 25.921349180 26.278220350
+## Spec.3         8.898597  0.27702949 11.098479512  0.054020818  0.590954504
+## Spec.4         3.685511  8.70775563  1.686212452 21.647336859 20.284465261
+## Spec.5         6.472299  0.04870966 20.705246907  1.127973393 12.443415241
+## Spec.6         4.569114  9.50378173  1.150327590 10.563927817 17.791095781
+## Spec.7         1.775551 19.20973517  0.037255126 12.100567870  0.383213079
+## Spec.8         2.109990  5.71560837 31.450024916  3.030284058  2.227833652
+## Spec.9         6.151428 11.12799130  0.538856292  0.004924929  0.469907777
+## Spec.10        4.858601 14.99939718  0.002021581  0.245480116  0.001424446
+## Spec.11        8.816191  6.51253025  0.011316689  0.088720025  0.017026133
+## Spec.12        8.898237  0.43398396  2.781737196  7.610627593  4.000203777</code></pre>
+<p>Pour visualiser la contribution on peut utiliser la fonction <strong>corrplot</strong>.</p>
+<pre class="r"><code>varh &lt;- get_pca_var(ACPh) #get_pca_var permet d&#39;extraire résultats de l&#39;ACP (coordonnées, corrélation entre variables et les axes, cosinus-carré et contributions)
+corrplot(varh$contrib, is.corr=FALSE)</code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>On peut visualiser notre ACP avec la fonction <strong>fviz_pca_biplot</strong>.</p>
+<pre class="r"><code>#fonction fviz_pca pour une meilleure représentation de l&#39;ACP
+fviz_pca_biplot(ACPh, axes = c(1, 2), geom = c(&quot;point&quot;, &quot;text&quot;), repel = T)</code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+Les flèches représentant les especes indique le sens d’augmentation de l’abondance de chaque espèces.
+On peut voir quels sites, quels espèces se regroupent.</p>
+<p>On refait la même ACP mais en ajoutant un gradient de couleur correspondant au cos2 de l’ACP. Le cos2 indique la qualité de réprésentation de la variable sur les deux composantes principale représentées par l’axe 1 et 2. Un cos2 sera parfaitement représenté sur ces deux axes.</p>
+<pre class="r"><code>fviz_pca_biplot(ACPh, axes = c(1, 2), geom = c(&quot;point&quot;, &quot;text&quot;), col.var=&quot;cos2&quot;, gradient.cols = c(&quot;pink&quot;,&quot;red&quot;,&quot;blue&quot;), repel=T)</code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>On peut refaire le même graph mais cette fois on remplace le gradient par “cos2” par un gradient par “contrib”.</p>
+<pre class="r"><code>fviz_pca_biplot(ACPh, axes = c(1, 2), geom = c(&quot;point&quot;, &quot;text&quot;), col.var=&quot;contrib&quot;, gradient.cols = c(&quot;pink&quot;,&quot;red&quot;,&quot;blue&quot;), repel=T)</code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>On peut regarder comment sont projetés les données sur d’autres axes.</p>
+<pre class="r"><code>fviz_pca_biplot(ACPh, axes = c(3, 4), geom = c(&quot;point&quot;, &quot;text&quot;), col.var=&quot;contrib&quot;, gradient.cols = c(&quot;pink&quot;,&quot;red&quot;,&quot;blue&quot;), repel=T)</code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="analyse-de-redondance-ou-rda" class="section level2">
+<h2>Analyse de redondance ou <strong>RDA</strong></h2>
+<p>Lorsque les données sont sous cette forme il est en réalité plus pertinent de faire une analyse de redondance, ou ACP sous contrainte linéaire, qui est une analyse à deux tableaux. Un tableau d’abondance expliqué par un tableau de variables environnementales.</p>
+<p>Je reprends mes deux tableaux.</p>
+<pre class="r"><code>env&lt;-read.table(&quot;spiders_env.txt&quot;, sep=&quot;&quot;, dec=&quot;.&quot;, row.names = 1)
+spe&lt;-read.table(&quot;spiders_spe.txt&quot;, sep=&quot;&quot;, dec=&quot;.&quot;, row.names = 1)</code></pre>
+<p>Transformation de hellinger adaptée aux tableaux d’abondances d’espèce ou il y a beaucoup de zéros.</p>
+<pre class="r"><code>spe2&lt;-decostand(spe, &quot;hellinger&quot;) #transformation</code></pre>
+<p>On fait la RDA.</p>
+<pre class="r"><code>tRDA&lt;-rda(spe2~.,data=env)
+tRDA</code></pre>
+<pre><code>## Call: rda(formula = spe2 ~ Sol_Sec + Reflectance + Calamagrostis +
+## Corynephorus, data = env)
+## 
+##               Inertia Proportion Rank
+## Total          0.4939     1.0000     
+## Constrained    0.3205     0.6490    4
+## Unconstrained  0.1733     0.3510   12
+## Inertia is variance 
+## 
+## Eigenvalues for constrained axes:
+##    RDA1    RDA2    RDA3    RDA4 
+## 0.22015 0.06838 0.02639 0.00560 
+## 
+## Eigenvalues for unconstrained axes:
+##     PC1     PC2     PC3     PC4     PC5     PC6     PC7     PC8     PC9    PC10 
+## 0.06804 0.04118 0.01817 0.01274 0.01002 0.00739 0.00516 0.00437 0.00345 0.00151 
+##    PC11    PC12 
+## 0.00070 0.00058</code></pre>
+<pre class="r"><code>screeplot(tRDA,col=&quot;salmon&quot;)</code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>On visualise l’analye de redondance.</p>
+<pre class="r"><code>#plot du RDA
+plot(tRDA,type=&quot;n&quot;) #création du plot
+text(tRDA,dis=&quot;cn&quot;, col=&quot;black&quot;) #mettre les fleches représentant les
+#variables, de couleur noir
+text(tRDA,&quot;species&quot;,col=&quot;chartreuse4&quot;, cex=0.8)#ajouter les espèces,
+text(tRDA, &quot;sites&quot;, col=&quot;salmon&quot;,cex=0.8)#ajouter les sites sur le graphe,
+title(main = &quot;Analyse de redondance (RDA)&quot;)</code></pre>
+<p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+La variable qui participe le plus à la formation de l’axe 1 est “Sol_Sec”, qui est négativement corrélée à Corynephorus et Calamagrostris. Les espèces 1, 3, 5, 8 se regroupe autour de ces deux variables. L’espèce 11 quand à elle a une affinité avec le sol sec. La qualité de représentation de la variable réflectance est très forte sur l’axe 2 (0.88).</p>
+<p>On peut faire une ANOVA afin de voir si les résultats sont significatifs</p>
+<pre class="r"><code>anova(tRDA, by=&quot;margin&quot;)</code></pre>
+<pre><code>## Permutation test for rda under reduced model
+## Marginal effects of terms
+## Permutation: free
+## Number of permutations: 999
+## 
+## Model: rda(formula = spe2 ~ Sol_Sec + Reflectance + Calamagrostis + Corynephorus, data = env)
+##               Df Variance      F Pr(&gt;F)    
+## Sol_Sec        1 0.018810 2.4959  0.046 *  
+## Reflectance    1 0.059552 7.9020  0.001 ***
+## Calamagrostis  1 0.028214 3.7438  0.011 *  
+## Corynephorus   1 0.036533 4.8476  0.003 ** 
+## Residual      23 0.173334                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>C’est bien le cas étant donné la p-value inférieur à 0.05.</p>
+</div>

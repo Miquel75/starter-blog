@@ -1,7 +1,7 @@
 ---
 title: 'Régression linéaire'
 subtitle: 'Lier deux variables entre elles.'
-summary: Une regression linéaire, à quoi ça sert ? 
+summary: 'Une regression linéaire, à quoi ça sert ?'
 authors:
 - Miquel Pons
 
@@ -76,7 +76,7 @@ donnees&lt;-read.csv2(&#39;donnees.csv&#39;,header=TRUE,sep=&#39;;&#39;)
 
 #Selectionner la variable expliquée et la (ou les) variables explicatives
 names(donnees)</code></pre>
-<pre><code>##  [1] &quot;CLEOBS&quot;                       &quot;OT&quot;                          
+<pre><code>##  [1] &quot;CLEOBS&quot;                       &quot;TEMP&quot;                        
 ##  [3] &quot;TAILLE&quot;                       &quot;PROF&quot;                        
 ##  [5] &quot;ESP&quot;                          &quot;DATEDEBUT&quot;                   
 ##  [7] &quot;DATEFIN&quot;                      &quot;DATEDETERMINATIONOBS&quot;        
@@ -107,26 +107,7 @@ mod&lt;-lm(TAILLE~PROF, donnees_na)
 plot(donnees_na$PROF, donnees_na$TAILLE)
 abline(mod)
 title(&quot;Régression linéaire&quot;)
-summary(mod)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = TAILLE ~ PROF, data = donnees_na)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -10.045  -3.511  -1.040   4.415  11.135 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -2.0334     2.5199  -0.807    0.428    
-## PROF          1.0599     0.1272   8.331 1.53e-08 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 5.761 on 24 degrees of freedom
-## Multiple R-squared:  0.743,  Adjusted R-squared:  0.7323 
-## F-statistic:  69.4 on 1 and 24 DF,  p-value: 1.53e-08</code></pre>
-<pre class="r"><code>#visualiser les résidus, étant la distance des points par rapport au modèle
+#visualiser les résidus, étant la distance des points par rapport au modèle
 segments(donnees_na$PROF,fitted(mod),donnees_na$PROF, donnees_na$TAILLE)
 #frame valeurs taille
 min(donnees_na$PROF)</code></pre>
@@ -169,7 +150,7 @@ title(&quot;Régression linéaire&quot;)</code></pre>
 <strong>Coefficient</strong> -&gt; donne la valeur de la pente :
 La pente correspond à l’évolution de la taille en fonction de la profondeur. Ici, pour 1 mètre de profondeur supplémentaire, la taille des poissons augmentera de 1.068cm. Intercept est la valeur du reste.<br />
 -&gt; Std. Error la précision de l’estimation.<br />
--&gt; t value le coefficient (pente) / par Std. Error, test si le coeff est significativement différent de zéro.<br />
+-&gt; t value le coefficient (pente) / Std. Error, test si le coeff est significativement différent de zéro.<br />
 -&gt; Pr(&gt;|t|) le niveau de signification<br />
 <strong>Residual Standard Error</strong> -&gt; déviation standard résiduel, c’est mieux quand ce chiffre est petit.<br />
 <strong>Multiple R-squared</strong> -&gt; R² est la proportion de variance expliquée par le modèle. <em>Plus R² est proche de 1, plus la variabilité des données est expliqué par le modèle.</em> Plus les résidus sont petits, plus R² est grand. Adjusted R-squared est plus précis dans le cas d’une régression multiple. La racine carré de R² donne le coefficient de corrélation.<br />

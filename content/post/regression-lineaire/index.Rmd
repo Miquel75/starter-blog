@@ -1,7 +1,7 @@
 ---
 title: 'Régression linéaire'
 subtitle: 'Lier deux variables entre elles.'
-summary: Une regression linéaire, à quoi ça sert ? 
+summary: 'Une regression linéaire, à quoi ça sert ?'
 authors:
 - Miquel Pons
 
@@ -156,7 +156,7 @@ summary(mod)
 **Coefficient** -> donne la valeur de la pente : 
 La pente correspond à l'évolution de la taille en fonction de la profondeur. Ici, pour 1 mètre de profondeur supplémentaire, la taille des poissons augmentera de 1.068cm. Intercept est la valeur du reste.    
             -> Std. Error la précision de l'estimation.  
-            -> t value le coefficient (pente) / par Std. Error, test si le coeff est significativement différent de zéro.  
+            -> t value le coefficient (pente) / Std. Error, test si le coeff est significativement différent de zéro.  
             -> Pr(>|t|) le niveau de signification  
 **Residual Standard Error** -> déviation standard résiduel, c'est mieux quand ce chiffre est petit.  
 **Multiple R-squared** -> R² est la proportion de variance expliquée par le modèle. *Plus R² est proche de 1, plus la variabilité des données est expliqué par le modèle.* Plus les résidus sont petits, plus R² est grand. Adjusted R-squared est plus précis dans le cas d'une régression multiple. La racine carré de R² donne le coefficient de corrélation.    
