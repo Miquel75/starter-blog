@@ -52,7 +52,7 @@ table <- function(data) { knitr::kable(data) }
 ```
 
 **Charger les packages**
-Charger les packages nécéssaires  la création d'une carte de densité.
+Charger les packages nécéssaires à la création d'une carte de densité.
 ```{r}
 library(ggplot2)
 library(RgoogleMaps)
