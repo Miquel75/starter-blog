@@ -11,7 +11,7 @@ image:
   #caption: 'Image par Image par Gerd Altmann de Pixabay'
   focal_point: ""
   preview_only: false
-lastmod: '2020-10-02T00:00:00Z'
+lastmod: '2020-10-23T00:00:00Z'
 projects: []
 subtitle: "Comment visualiser la densité sur une carte?"
 summary: "Utiliser ggmap et une clef API google pour charger une carte, et y représenter la densité d'observation d'espèces."
