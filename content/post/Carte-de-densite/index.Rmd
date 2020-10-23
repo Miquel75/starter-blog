@@ -7,22 +7,20 @@ date: "`r Sys.Date()`"
 draft: no
 featured: no
 image:
+  focal_point: ''
   placement: 1
-  #caption: 'Image par Image par Gerd Altmann de Pixabay'
-  focal_point: ""
-  preview_only: false
+  preview_only: no
 lastmod: '2020-10-23T00:00:00Z'
 projects: []
-subtitle: "Comment visualiser la densité sur une carte?"
-summary: "Utiliser ggmap et une clef API google pour charger une carte, et y représenter la densité d'observation d'espèces."
+subtitle: Comment visualiser la densité sur une carte?
+summary: Utiliser ggmap et une clef API google pour charger une carte, et y représenter
+  la densité d'observation d'espèces.
 tags:
 - R
 - map
 - densité
 - ggmap
- 
-authors: 
-- Miquel Pons
+authors: Miquel Pons
 ---
 
 
