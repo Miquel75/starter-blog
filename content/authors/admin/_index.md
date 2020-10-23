@@ -69,7 +69,7 @@ Ce blog me permet de structurer mes connaissances et de transmettre ce que j'app
 S'il donne un jour un coup de pouce à quelqu'un dans le cadre d'un projet d'écologie ou de conservation du vivant, ce blog aura atteint tous ses objectifs. 
   
       
-<span style="color:#4f5356"><i>Dis moi et j'oublie. Montre moi et je me souviens. Implique moi et je comprends. <br/>"Xun Zi"<i/></span> 
+<span style="color:#4f5356"><i>Dis-moi et j'oublie. Montre-moi et je me souviens. Implique-moi et je comprends. <br/>"Xun Zi"<i/></span> 
 
 
 

@@ -3,7 +3,7 @@ title: "Analyse en composantes principales (ACP) et Analyse de redondances (RDA)
 categories:
 - R
 - Analyses multivariés
-date: "2020-10-02"
+date: "2020-10-23"
 draft: no
 featured: no
 image:
@@ -59,9 +59,9 @@ DCA</code></pre>
 ## Decorana values 0.6444 0.2886 0.08221 0.06241
 ## Axis lengths    2.7379 2.2460 1.55466 1.14527</code></pre>
 <p>Axis lengths étant inférieur à 3, ce test suggère que les données sont homogène, permettant des méthodes linéaires (ACP, RDA).
-Si Axis lengths supérieur à 4, il faut effectuer faire d’autres tests (ACC) (ou transformer les données (Hellinger).</p>
+Si Axis lengths supérieur à 4, il faut effectuer d’autres tests (ACC) (ou transformer les données (Hellinger).</p>
 <p>On peut faire notre ACP avec la fonction PCA du package FactoMiner</p>
-<pre class="r"><code>ACP&lt;-PCA(all, quali.sup = 1:3)</code></pre>
+<pre class="r"><code>ACP&lt;-PCA(all)</code></pre>
 <p><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /><img src="/post/acp-rda/index_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
 <pre class="r"><code>spe2&lt;-decostand(spe, &quot;hellinger&quot;) #transformation car beaucoup de 0 dans les données
 allh&lt;-cbind(env, spe2)
@@ -310,10 +310,10 @@ La variable qui participe le plus à la formation de l’axe 1 est “Sol_Sec”
 ## 
 ## Model: rda(formula = spe2 ~ Sol_Sec + Reflectance + Calamagrostis + Corynephorus, data = env)
 ##               Df Variance      F Pr(&gt;F)    
-## Sol_Sec        1 0.018810 2.4959  0.059 .  
+## Sol_Sec        1 0.018810 2.4959  0.051 .  
 ## Reflectance    1 0.059552 7.9020  0.001 ***
-## Calamagrostis  1 0.028214 3.7438  0.012 *  
-## Corynephorus   1 0.036533 4.8476  0.002 ** 
+## Calamagrostis  1 0.028214 3.7438  0.005 ** 
+## Corynephorus   1 0.036533 4.8476  0.003 ** 
 ## Residual      23 0.173334                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>

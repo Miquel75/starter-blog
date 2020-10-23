@@ -75,12 +75,12 @@ DCA
 ```
 
 Axis lengths étant inférieur à 3, ce test suggère que les données sont homogène, permettant des méthodes linéaires (ACP, RDA). 
-Si Axis lengths supérieur à 4, il faut effectuer faire d'autres tests (ACC) (ou transformer les données (Hellinger).
+Si Axis lengths supérieur à 4, il faut effectuer d'autres tests (ACC) (ou transformer les données (Hellinger).
 
 On peut faire notre ACP avec la fonction PCA du package FactoMiner
 
 ```{r}
-ACP<-PCA(all, quali.sup = 1:3)
+ACP<-PCA(all)
 spe2<-decostand(spe, "hellinger") #transformation car beaucoup de 0 dans les données
 allh<-cbind(env, spe2)
 ACPh<-PCA(allh) 

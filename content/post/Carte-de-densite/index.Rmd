@@ -1,0 +1,117 @@
+---
+title: 'Marmap : Carte de densité'
+subtitle: 'Comment faire une carte de densité ?'
+summary: Créer une carte de densité avec une API google.
+authors:
+- Miquel Pons
+
+tags:
+- R
+- cartographie
+- map
+- densité
+
+categories:
+- R
+- map
+
+date: Sys.Date()
+lastmod: "2020-10-23T00:00:00Z"
+featured: false
+draft: false
+
+# Featured image
+# To use, add an image named `featured.jpg/png` to your page's folder.
+# Placement options: 1 = Full column width, 2 = Out-set, 3 = Screen-width
+# Focal point options: Smart, Center, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight
+image:
+  placement: 1
+#  caption: 'Image credit: [**Unsplash**](https://unsplash.com/photos/CpkOjOcXdUY)'
+  focal_point: ""
+  preview_only: false
+
+# Projects (optional).
+#   Associate this post with one or more of your projects.
+#   Simply enter your project's folder or file name without extension.
+#   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
+#   Otherwise, set `projects = []`.
+projects: []
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_knit$set(root.dir = normalizePath("C:/Users/Miquel Pons/Documents/starter-blog/static/files"))
+
+knitr::kable
+table <- function(data) { knitr::kable(data) }
+
+```
+
+**Charger les packages**
+Charger les packages nécéssaires  la création d'une carte de densité.
+```{r}
+library(ggplot2)
+library(RgoogleMaps)
+library(ggmap)
+library(tidyr)
+library(RColorBrewer)
+```
+
+**Charger les données**
+
+On importe un set de données comportant uniquement des données de GPS. Ces coordonnées correspondent par exemple à des observations de tortues faites en Méditerranée française. Bien s'assurer que les données gps sont au format **numérique**
+
+```{r}
+#set de données avec uniquement les données gps
+gps<-read.csv2("gps.csv", header=TRUE, sep =  ";")
+
+#on enlève les lignes a valeurs manquantes avec drop_na from tidyr
+gps_na <- gps %>% drop_na(lon,lat)
+
+#on met au format dnumeric
+gps_na$lon<-as.numeric(gps_na$lon)
+gps_na$lat<-as.numeric(gps_na$lat)
+
+
+```
+
+Ensuite il faut établir une connexion avec les services map de google en utilisant une clef API afin de pouvoir charger le fond de carte. Pour cela il faut suivre les instructions sur google. 
+
+```{r, eval = FALSE}
+#s'enregistrer sur google API avec une clef
+register_google(key = "mQkzTpiaLYjPqXQBotesgif3EfGL2dbrNVOrogg") 
+
+```
+
+On utilise la fonction get_map pour importer une carte dans un objet.lon et lat fixe le centre de la carte que l'on souhaite, et le zoom permet de cadrer. maptype permet de choisir quel type de carte on veut.  ("terrain", "terrain-background", "satellite", "roadmap","hybrid"). N'oubliez pas que vous pouvez toujours consulter l'aide de R pour en savoir plus sur les fonctions en utilisant `?get_map`. 
+
+```{r}
+#charger map satellite france
+med_france<-get_map(location=c(lon = 6.35 , lat = 40.5), zoom = 6, language= "fr-FR", maptype="satellite")
+```
+
+On utilise la fonction stat_density_2d permettant de tracer sur la carte la densité de données.
+
+```{r}
+#carte mediterranée française avec densité d'observations
+ggmap(med_france) + stat_density_2d(aes(fill = ..level..), alpha=.5, geom="polygon", data = gps_na) + 
+                                                                          scale_fill_viridis_c() +
+              ggtitle("Carte de densité d'observations tortues en méditerranée française")
+```
+
+Ou dans un autre style.
+
+```{r}
+ggmap(med_france) +stat_density_2d(data = gps_na,
+                aes(x = lon,
+                    y = lat,
+                    fill = stat(level)),
+                alpha = .15,
+                bins = 25,
+                geom = "polygon") +
+        scale_fill_gradientn(colors = brewer.pal(9, "YlOrRd")) +
+              ggtitle("Carte de densité d'observations de tortues en méditerranée française")
+```
+
