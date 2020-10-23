@@ -43,8 +43,15 @@ projects: []
 
 
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_knit$set(root.dir = normalizePath("C:/Users/Miquel Pons/Documents/starter-blog/static/files"))
+
+knitr::kable
+table <- function(data) { knitr::kable(data) }
+
 ```
 
 Pour reproduire le script, télécharger les données :  
@@ -60,7 +67,6 @@ Si l'on prend le même jeu de donnée que précédemment.
 
 ``` {r }
 
-setwd ("C:/Users/Miquel Pons/Desktop")
 
 table <- read.table("poissons.txt", sep = ";") 
 
