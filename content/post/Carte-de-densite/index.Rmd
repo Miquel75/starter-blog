@@ -1,7 +1,7 @@
 ---
 title: 'Carte de densité avec ggmap'
 subtitle: 'Comment visualiser la densité sur une carte?'
-summary: Utiliser ggmap et une clef API google pour charger une carte, et y représenter
+summary: Utiliser ggmap et une clef API google pour charger une carte et y représenter
   la densité d'observation d'espèces.
 authors:
 - Miquel Pons
@@ -66,7 +66,7 @@ library(RColorBrewer)
 
 **Charger les données**
 
-On importe un set de données comportant uniquement des données de GPS. Ces coordonnées correspondent par exemple à des observations de tortues faites en Méditerranée française. Bien s'assurer que les données gps sont au format **numérique**
+On importe un set de données comportant uniquement des données de GPS. Ces coordonnées correspondent par exemple à des observations de tortues faites en Méditerranée française. Bien s'assurer que les données gps sont au format **numeric**
 
 ```{r}
 #set de données avec uniquement les données gps
@@ -75,7 +75,7 @@ gps<-read.csv2("gps.csv", header=TRUE, sep =  ";")
 #on enlève les lignes a valeurs manquantes avec drop_na from tidyr
 gps_na <- gps %>% drop_na(lon,lat)
 
-#on met au format dnumeric
+#on met au format numeric
 gps_na$lon<-as.numeric(gps_na$lon)
 gps_na$lat<-as.numeric(gps_na$lat)
 
@@ -85,19 +85,19 @@ gps_na$lat<-as.numeric(gps_na$lat)
 Ensuite il faut établir une connexion avec les services map de google en utilisant une clef API afin de pouvoir charger le fond de carte. Pour cela il faut suivre les instructions sur google. 
 
 ```{r, eval = FALSE}
-#s'enregistrer sur google API avec une clef
+#s'enregistrer sur google API avec une clef (la clef ci-dessous est factice)
 register_google(key = "mQkzTpiaLYjPqXQBotesgif3EfGL2dbrNVOrogg") 
 
 ```
 
-On utilise la fonction get_map pour importer une carte dans un objet.lon et lat fixe le centre de la carte que l'on souhaite, et le zoom permet de cadrer. maptype permet de choisir quel type de carte on veut.  ("terrain", "terrain-background", "satellite", "roadmap","hybrid"). N'oubliez pas que vous pouvez toujours consulter l'aide de R pour en savoir plus sur les fonctions en utilisant `?get_map`. 
+On utilise la fonction **get_map** pour importer une carte dans un objet.**lon** et **lat** fixe le centre de la carte que l'on souhaite, et le **zoom** permet de cadrer. **maptype** permet de choisir quel type de carte on veut ("terrain", "terrain-background", "satellite", "roadmap","hybrid"). N'oubliez pas que vous pouvez toujours consulter l'aide de R pour en savoir plus sur les fonctions en utilisant `?get_map`. 
 
 ```{r}
 #charger map satellite france
 med_france<-get_map(location=c(lon = 6.35 , lat = 40.5), zoom = 6, language= "fr-FR", maptype="satellite")
 ```
 
-On utilise la fonction stat_density_2d permettant de tracer sur la carte la densité de données.
+On utilise la fonction **stat_density_2d** permettant de tracer sur la carte la densité de données.
 
 ```{r, warning=FALSE}
 #carte mediterranée française avec densité d'observations

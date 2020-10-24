@@ -1,7 +1,7 @@
 ---
 title: 'Carte de densité avec ggmap'
 subtitle: 'Comment visualiser la densité sur une carte?'
-summary: Utiliser ggmap et une clef API google pour charger une carte, et y représenter
+summary: Utiliser ggmap et une clef API google pour charger une carte et y représenter
   la densité d'observation d'espèces.
 authors:
 - Miquel Pons
@@ -55,24 +55,24 @@ library(ggmap)</code></pre>
 <pre class="r"><code>library(tidyr)
 library(RColorBrewer)</code></pre>
 <p><strong>Charger les données</strong></p>
-<p>On importe un set de données comportant uniquement des données de GPS. Ces coordonnées correspondent par exemple à des observations de tortues faites en Méditerranée française. Bien s’assurer que les données gps sont au format <strong>numérique</strong></p>
+<p>On importe un set de données comportant uniquement des données de GPS. Ces coordonnées correspondent par exemple à des observations de tortues faites en Méditerranée française. Bien s’assurer que les données gps sont au format <strong>numeric</strong></p>
 <pre class="r"><code>#set de données avec uniquement les données gps
 gps&lt;-read.csv2(&quot;gps.csv&quot;, header=TRUE, sep =  &quot;;&quot;)
 
 #on enlève les lignes a valeurs manquantes avec drop_na from tidyr
 gps_na &lt;- gps %&gt;% drop_na(lon,lat)
 
-#on met au format dnumeric
+#on met au format numeric
 gps_na$lon&lt;-as.numeric(gps_na$lon)
 gps_na$lat&lt;-as.numeric(gps_na$lat)</code></pre>
 <p>Ensuite il faut établir une connexion avec les services map de google en utilisant une clef API afin de pouvoir charger le fond de carte. Pour cela il faut suivre les instructions sur google.</p>
-<pre class="r"><code>#s&#39;enregistrer sur google API avec une clef
+<pre class="r"><code>#s&#39;enregistrer sur google API avec une clef (la clef ci-dessous est factice)
 register_google(key = &quot;mQkzTpiaLYjPqXQBotesgif3EfGL2dbrNVOrogg&quot;) </code></pre>
-<p>On utilise la fonction get_map pour importer une carte dans un objet.lon et lat fixe le centre de la carte que l’on souhaite, et le zoom permet de cadrer. maptype permet de choisir quel type de carte on veut. (“terrain”, “terrain-background”, “satellite”, “roadmap”,“hybrid”). N’oubliez pas que vous pouvez toujours consulter l’aide de R pour en savoir plus sur les fonctions en utilisant <code>?get_map</code>.</p>
+<p>On utilise la fonction <strong>get_map</strong> pour importer une carte dans un objet.<strong>lon</strong> et <strong>lat</strong> fixe le centre de la carte que l’on souhaite, et le <strong>zoom</strong> permet de cadrer. <strong>maptype</strong> permet de choisir quel type de carte on veut (“terrain”, “terrain-background”, “satellite”, “roadmap”,“hybrid”). N’oubliez pas que vous pouvez toujours consulter l’aide de R pour en savoir plus sur les fonctions en utilisant <code>?get_map</code>.</p>
 <pre class="r"><code>#charger map satellite france
 med_france&lt;-get_map(location=c(lon = 6.35 , lat = 40.5), zoom = 6, language= &quot;fr-FR&quot;, maptype=&quot;satellite&quot;)</code></pre>
 <pre><code>## Source : https://maps.googleapis.com/maps/api/staticmap?center=40.5,6.35&amp;zoom=6&amp;size=640x640&amp;scale=2&amp;maptype=satellite&amp;language=fr-FR&amp;key=xxx-05QnQjlm3D_0</code></pre>
-<p>On utilise la fonction stat_density_2d permettant de tracer sur la carte la densité de données.</p>
+<p>On utilise la fonction <strong>stat_density_2d</strong> permettant de tracer sur la carte la densité de données.</p>
 <pre class="r"><code>#carte mediterranée française avec densité d&#39;observations
 ggmap(med_france) + stat_density_2d(aes(fill = ..level..), alpha=.5, geom=&quot;polygon&quot;, data = gps_na) + 
                                                                           scale_fill_viridis_c() +
