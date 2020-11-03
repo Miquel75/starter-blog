@@ -1,5 +1,5 @@
 ---
-title: 'Carte de densité avec ggmap'
+title: "Carte Richesse Spécifique"
 subtitle: 'Comment visualiser la densité sur une carte?'
 summary: Utiliser ggmap et une clef API google pour charger une carte et y représenter
   la densité d'observation d'espèces.
@@ -17,7 +17,7 @@ categories:
 - Cartographie
 
 date: Sys.Date()
-lastmod: "2020-10-24T00:00:00Z"
+lastmod: "2020-11-04T00:00:00Z"
 featured: false
 draft: false
 
@@ -54,30 +54,30 @@ table <- function(data) { knitr::kable(data) }
 
 ```
 
-**Charger les packages**
-Charger les packages nécéssaires à la création d'une carte de densité.
-```{r}
+**carte de richesse spécifique en Méditerranée française**
+
+```{r message=FALSE, warning=FALSE, results = 'hide'}
+
 library(ggplot2)
-library(RgoogleMaps)
-library(ggmap)
-library(tidyr)
 library(RColorBrewer)
+library(raster)
+library(ggmap)
+library(speciesgeocodeR)
+library(tidyr)
 ```
-  
 
-On **importe** un set de données comportant uniquement des données de GPS. Ces coordonnées correspondent par exemple à des observations de tortues faites en Méditerranée française. On **formate** en s'assurant bien que les données gps sont au format **numeric**
+On **importe** un set de données comportant uniquement des données de GPS. Ces coordonnées correspondent par exemple à des observations d'élasmobranches (raies et requins) faites en Méditerranée française. On **formate** en s'assurant bien que les données gps sont au format **numeric**
 
 ```{r}
-#set de données avec uniquement les données gps
-gps<-read.csv2("gps.csv", header=TRUE, sep =  ";")
+#set de données avec uniquement les données gps et noms d'especes
+rich_data<-read.csv2("rich_data.csv", header=TRUE, sep =  ";")
 
 #on enlève les lignes a valeurs manquantes avec drop_na from tidyr
-gps_na <- gps %>% drop_na(lon,lat)
+rich_data <- rich_data %>% drop_na(especes, LON, LAT)
 
 #on met au format numeric
-gps_na$lon<-as.numeric(gps_na$lon)
-gps_na$lat<-as.numeric(gps_na$lat)
-
+rich_data$LON<-as.numeric(as.character(rich_data$LON))
+rich_data$LAT<-as.numeric(as.character(rich_data$LAT))
 
 ```
 
@@ -92,32 +92,26 @@ register_google(key = "mQkzTpiaLYjPqXQBotesgif3EfGL2dbrNVOrogg")
 
 On utilise la fonction **get_map** pour importer une carte dans un objet.**lon** et **lat** fixe le centre de la carte que l'on souhaite, et le **zoom** permet de cadrer. **maptype** permet de choisir quel type de carte on veut ("terrain", "terrain-background", "satellite", "roadmap","hybrid"). N'oubliez pas que vous pouvez toujours consulter l'aide de R pour en savoir plus sur les fonctions en utilisant `?get_map`. 
 
-```{r}
+```{r message=FALSE}
 #charger map satellite france
 med_france<-get_map(location=c(lon = 6.35 , lat = 40.5), zoom = 6, language= "fr-FR", maptype="satellite")
 ```
 
-On créer la carte avec **ggmap** et on utilise la fonction **stat_density_2d** permettant de tracer sur la carte la densité de données. 
-**scale_fill_viridis_c** pour les couleurs et **ggtitle** le titre.
+On utilise la fonction RichnessGrid qui détermine le nombre d'espèce présentent dans une "cellule". La taille de ces cellules est déterminée par la résolution indiquée dans "reso". 
+S'assurer pour que ça marche que les données gps soient en numérique, qu'il n'y ai pas de NA, et que le data frame présente le nom des espèces, longitude et latitude, danc cet ordre.
 
-```{r, warning=FALSE}
-#carte mediterranée française avec densité d'observations
-ggmap(med_france) + stat_density_2d(aes(fill = ..level..), alpha=.5, geom="polygon", data = gps_na) + 
-                                                                          scale_fill_viridis_c() +
-              ggtitle("Carte de densité d'observations tortues en méditerranée française")
+```{r message=FALSE, warning=FALSE, results = 'hide'}
+
+#le nombre d'espèce par cellule de la grille de résolution choisi
+rich <- RichnessGrid(rich_data, reso=0.15)
+#préparer pour le plot avrc le package raster
+plo_rich <- data.frame(rasterToPoints(rich))
+#map API google + richesse spécifique avec gradient de couleur
+ggmap(med_france) + 
+  geom_raster(data = plo_rich, aes(x = x, y = y, fill = layer)) + 
+  scale_fill_gradientn(name="espèces", colors = brewer.pal(9, "YlOrRd")) + 
+        coord_fixed() + 
+  ggtitle("Carte de richesse spécifique en Méditerranée française")
+
+       
 ```
-
-Ou dans un autre style on modifie les couleurs.
-
-```{r, warning=FALSE}
-ggmap(med_france) +stat_density_2d(data = gps_na,
-                aes(x = lon,
-                    y = lat,
-                    fill = stat(level)),
-                alpha = .15,
-                bins = 25,
-                geom = "polygon") +
-        scale_fill_gradientn(colors = brewer.pal(9, "YlOrRd")) +
-              ggtitle("Carte de densité d'observations de tortues en méditerranée française")
-```
-
