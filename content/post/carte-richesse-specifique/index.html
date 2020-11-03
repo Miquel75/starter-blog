@@ -362,20 +362,22 @@ summary {
 
 
 <h1 class="title toc-ignore">Carte Richesse Spécifique</h1>
-<h3 class="subtitle">Comment visualiser la densité sur une carte?</h3>
+<h3 class="subtitle">Comment visualiser la richesse spécifique sur une carte?</h3>
 <h4 class="date">Sys.Date()</h4>
 
 </div>
 
 
 <p><strong>carte de richesse spécifique en Méditerranée française</strong></p>
+<p>La richesse spécifique est un indicateur permettant une mesure de la biodiversité d’un écosystème. Elle désigne la diversité d’espèces.</p>
+<p>On charge les package.</p>
 <pre class="r"><code>library(ggplot2)
 library(RColorBrewer)
 library(raster)
 library(ggmap)
 library(speciesgeocodeR)
 library(tidyr)</code></pre>
-<p>On <strong>importe</strong> un set de données comportant uniquement des données de GPS. Ces coordonnées correspondent par exemple à des observations d’élasmobranches (raies et requins) faites en Méditerranée française. On <strong>formate</strong> en s’assurant bien que les données gps sont au format <strong>numeric</strong></p>
+<p>On <strong>importe</strong> un set de données comportant uniquement des données de GPS et d’espèces. Ces coordonnées correspondent par exemple à des observations d’élasmobranches (raies et requins) faites en Méditerranée française. On <strong>formate</strong> en s’assurant bien que les données gps sont au format <strong>numeric</strong></p>
 <pre class="r"><code>#set de données avec uniquement les données gps et noms d&#39;especes
 rich_data&lt;-read.csv2(&quot;rich_data.csv&quot;, header=TRUE, sep =  &quot;;&quot;)
 
