@@ -16,7 +16,7 @@ tags:
 
 categories:
 - R
-- Cartographie
+- map
 
 date: Sys.Date()
 lastmod: "2020-11-04T00:00:00Z"
@@ -41,9 +41,8 @@ image:
 projects: []
 
 
-
-
 ---
+
 
 
 ```{r setup, include=FALSE}
